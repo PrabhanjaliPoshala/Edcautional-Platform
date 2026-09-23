@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 200" fill="none">
+  <!-- ICON SECTION -->
+  <g transform="translate(10, 10)">
+    <!-- Stylized 'C' in Deep Navy Blue -->
+    <path 
+      d="M 125 55 C 115 42, 95 34, 72 34 C 32 34, 10 65, 10 102 C 10 142, 36 168, 76 168 C 102 168, 122 156, 134 142 L 122 130 C 112 142, 95 152, 75 152 C 45 152, 28 130, 28 102 C 28 72, 48 50, 75 50 C 95 50, 108 58, 116 68 Z" 
+      fill="#04234C" 
+    />
+    <!-- 'C' Top Serif Finial Accent -->
+    <path 
+      d="M 116 68 C 118 64, 122 58, 130 54 L 126 50 C 120 54, 115 60, 112 66 Z" 
+      fill="#04234C" 
+    />
+
+    <!-- Stylized 'V' Left Curved Arm (Warm Gold) -->
+    <path 
+      d="M 28 162 C 48 168, 72 165, 92 140 L 152 45 C 154 41, 156 36, 158 32 C 156 36, 148 52, 142 66 L 90 138 C 74 158, 52 162, 28 162 Z" 
+      fill="#C99A2E" 
+    />
+
+    <!-- Stylized 'V' Right Downward Arm (Deep Navy) -->
+    <path 
+      d="M 112 75 L 142 165 C 146 178, 150 190, 154 198 L 165 198 C 160 186, 154 172, 148 152 L 128 75 Z" 
+      fill="#04234C" 
+    />
+
+    <!-- Golden Spark / 4-Point Star at Apex of V -->
+    <path 
+      d="M 158 32 Q 158 22 163 16 Q 158 10 158 0 Q 158 10 153 16 Q 158 22 158 32 Z" 
+      fill="#C99A2E" 
+    />
+    <path 
+      d="M 142 16 Q 152 16 158 16 Q 164 16 174 16 Q 164 16 158 16 Q 152 16 142 16 Z" 
+      stroke="#C99A2E" 
+      stroke-width="2.5" 
+      stroke-linecap="round" 
+    />
+  </g>
+
+  <!-- TYPOGRAPHY SECTION -->
+  <!-- CAREER (Navy) and VERSE (Gold) -->
+  <text 
+    x="215" 
+    y="102" 
+    font-family="'Cinzel', 'Playfair Display', 'Times New Roman', serif" 
+    font-size="64" 
+    font-weight="700" 
+    letter-spacing="0.5" 
+    fill="#04234C"
+  >
+    CAREER<tspan fill="#C99A2E">VERSE</tspan>
+  </text>
+
+  <!-- MIDDLE ROW: LINE - I N D I A - LINE -->
+  <!-- Left Hairline -->
+  <line x1="218" y1="135" x2="350" y2="135" stroke="#C99A2E" stroke-width="2" />
+  
+  <!-- INDIA text -->
+  <text 
+    x="455" 
+    y="141" 
+    text-anchor="middle" 
+    font-family="'Cinzel', 'Times New Roman', serif" 
+    font-size="24" 
+    font-weight="700" 
+    letter-spacing="16" 
+    fill="#04234C"
+  >
+    INDIA
+  </text>
+  
+  <!-- Right Hairline -->
+  <line x1="560" y1="135" x2="740" y2="135" stroke="#C99A2E" stroke-width="2" />
+
+  <!-- TAGLINE: GUIDING CAREERS. BUILDING FUTURES. -->
+  <text 
+    x="218" 
+    y="178" 
+    font-family="'Plus Jakarta Sans', 'Outfit', sans-serif" 
+    font-size="19" 
+    font-weight="700" 
+    letter-spacing="3.2" 
+    fill="#04234C"
+  >
+    GUIDING CAREERS. BUILDING FUTURES.
+  </text>
+</svg>
