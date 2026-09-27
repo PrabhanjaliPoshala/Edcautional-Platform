@@ -147,23 +147,32 @@ export async function submitCareerGuidance(
 
     // Store in Supabase if configured
     if (isSupabaseConfigured() && supabase) {
+      const payload: any = {
+        full_name: data.full_name,
+        mobile_number: data.mobile_number,
+        email: data.email || null,
+        current_qualification: data.current_qualification,
+        school_college: data.school_college || null,
+        city: data.city || null,
+        state: data.state || null,
+        interested_field: data.interested_field || null,
+        preferred_course: data.preferred_course || null,
+        career_goal: data.career_goal || null,
+        preferred_counselling_mode: data.preferred_counselling_mode || data.counselling_mode || 'Online',
+        message: data.message || null,
+        status: 'New'
+      };
+
+      if (data.who_is_booking) payload.who_is_booking = data.who_is_booking;
+      if (data.parent_guardian_name) payload.parent_guardian_name = data.parent_guardian_name;
+      if (data.parent_guardian_mobile) payload.parent_guardian_mobile = data.parent_guardian_mobile;
+      if (data.counselling_mode) payload.counselling_mode = data.counselling_mode;
+      if (data.current_class) payload.current_class = data.current_class;
+      if (data.preferred_career) payload.preferred_career = data.preferred_career;
+
       const { data: inserted, error } = await supabase
         .from('career_guidance_leads')
-        .insert([{
-          full_name: data.full_name,
-          mobile_number: data.mobile_number,
-          email: data.email || null,
-          current_qualification: data.current_qualification,
-          school_college: data.school_college || null,
-          city: data.city || null,
-          state: data.state || null,
-          interested_field: data.interested_field || null,
-          preferred_course: data.preferred_course || null,
-          career_goal: data.career_goal || null,
-          preferred_counselling_mode: data.preferred_counselling_mode,
-          message: data.message || null,
-          status: 'New'
-        }])
+        .insert([payload])
         .select()
         .single();
 
@@ -203,21 +212,29 @@ export async function submitAdmissionEnquiry(
     };
 
     if (isSupabaseConfigured() && supabase) {
+      const payload: any = {
+        full_name: data.full_name,
+        mobile_number: data.mobile_number,
+        email: data.email,
+        current_qualification: data.current_qualification,
+        preferred_program: data.preferred_program,
+        preferred_specialization: data.preferred_specialization || null,
+        preferred_location: data.preferred_location || null,
+        budget_range: data.budget_range || null,
+        preferred_intake_year: data.preferred_intake_year || null,
+        message: data.message || null,
+        status: 'New'
+      };
+
+      if (data.who_is_booking) payload.who_is_booking = data.who_is_booking;
+      if (data.parent_guardian_name) payload.parent_guardian_name = data.parent_guardian_name;
+      if (data.parent_guardian_mobile) payload.parent_guardian_mobile = data.parent_guardian_mobile;
+      if (data.current_class) payload.current_class = data.current_class;
+      if (data.preferred_career) payload.preferred_career = data.preferred_career;
+
       const { data: inserted, error } = await supabase
         .from('admission_enquiries')
-        .insert([{
-          full_name: data.full_name,
-          mobile_number: data.mobile_number,
-          email: data.email,
-          current_qualification: data.current_qualification,
-          preferred_program: data.preferred_program,
-          preferred_specialization: data.preferred_specialization || null,
-          preferred_location: data.preferred_location || null,
-          budget_range: data.budget_range || null,
-          preferred_intake_year: data.preferred_intake_year || null,
-          message: data.message || null,
-          status: 'New'
-        }])
+        .insert([payload])
         .select()
         .single();
 
@@ -256,19 +273,28 @@ export async function submitCounsellingRequest(
     };
 
     if (isSupabaseConfigured() && supabase) {
+      const payload: any = {
+        full_name: data.full_name,
+        mobile_number: data.mobile_number,
+        email: data.email || null,
+        counselling_category: data.counselling_category,
+        preferred_mode: data.preferred_mode || data.counselling_mode || 'Online',
+        preferred_date: data.preferred_date || null,
+        preferred_time: data.preferred_time || null,
+        message: data.message || null,
+        status: 'New'
+      };
+
+      if (data.who_is_booking) payload.who_is_booking = data.who_is_booking;
+      if (data.parent_guardian_name) payload.parent_guardian_name = data.parent_guardian_name;
+      if (data.parent_guardian_mobile) payload.parent_guardian_mobile = data.parent_guardian_mobile;
+      if (data.counselling_mode) payload.counselling_mode = data.counselling_mode;
+      if (data.current_class) payload.current_class = data.current_class;
+      if (data.preferred_career) payload.preferred_career = data.preferred_career;
+
       const { data: inserted, error } = await supabase
         .from('counselling_requests')
-        .insert([{
-          full_name: data.full_name,
-          mobile_number: data.mobile_number,
-          email: data.email || null,
-          counselling_category: data.counselling_category,
-          preferred_mode: data.preferred_mode,
-          preferred_date: data.preferred_date || null,
-          preferred_time: data.preferred_time || null,
-          message: data.message || null,
-          status: 'New'
-        }])
+        .insert([payload])
         .select()
         .single();
 

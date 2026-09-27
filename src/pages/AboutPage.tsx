@@ -107,12 +107,38 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
       {/* Leadership & Network Info */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Achievement Impact Strip */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div>
+              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">1000+</div>
+              <div className="text-xs font-bold text-slate-700 mt-1">Students Guided</div>
+              <div className="text-[11px] text-slate-500">Across India</div>
+            </div>
+            <div className="pt-3 md:pt-0">
+              <div className="text-3xl font-extrabold text-[#C99A2E] font-display">1000+</div>
+              <div className="text-xs font-bold text-slate-700 mt-1">Admissions Completed</div>
+              <div className="text-[11px] text-slate-500">UG, PG & Online Degrees</div>
+            </div>
+            <div className="pt-3 md:pt-0">
+              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">100+</div>
+              <div className="text-xs font-bold text-slate-700 mt-1">Accredited Campuses</div>
+              <div className="text-[11px] text-slate-500">UGC & NAAC Verified</div>
+            </div>
+            <div className="pt-3 md:pt-0">
+              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">100%</div>
+              <div className="text-xs font-bold text-slate-700 mt-1">Independent Advice</div>
+              <div className="text-[11px] text-slate-500">Zero Commercial Quotas</div>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-[#0B2A52] text-white rounded-2xl p-8 sm:p-12 text-center space-y-4">
           <h2 className="text-2xl sm:text-3xl font-extrabold font-display">
             A Pan-India Institutional Presence
           </h2>
           <p className="text-sm text-slate-200 max-w-2xl mx-auto leading-relaxed">
-            With centralized counselling hubs in New Delhi and Bengaluru and advisory ties across 50+ leading Indian and global institutions, CareerVerse India provides accessible, world-class admission facilitation for students nationwide.
+            With centralized counselling hubs Across India and advisory ties across 1000+ leading Indian and global institutions, CareerVerse India provides accessible, world-class admission facilitation for students nationwide.
           </p>
           <div className="pt-4 flex justify-center gap-3">
             <button

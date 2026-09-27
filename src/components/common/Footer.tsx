@@ -157,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-3 text-xs text-slate-300">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C99A2E] shrink-0 mt-0.5" />
-                <span>CareerVerse India, Corporate Education Towers, Connaught Place, New Delhi & Tech Center Bengaluru</span>
+                <span>23-11-271, S V Nagar, Revenue Ward No. 23, Tirupati – 517501</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#C99A2E] shrink-0" />

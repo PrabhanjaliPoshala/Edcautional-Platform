@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS career_guidance_leads (
     full_name TEXT NOT NULL,
     mobile_number TEXT NOT NULL,
     email TEXT,
+    who_is_booking TEXT DEFAULT 'Student',
+    parent_guardian_name TEXT,
+    parent_guardian_mobile TEXT,
+    counselling_mode TEXT DEFAULT 'Online Meeting',
+    current_class TEXT,
+    preferred_career TEXT,
     current_qualification TEXT NOT NULL,
     school_college TEXT,
     city TEXT,
@@ -34,6 +40,11 @@ CREATE TABLE IF NOT EXISTS admission_enquiries (
     full_name TEXT NOT NULL,
     mobile_number TEXT NOT NULL,
     email TEXT NOT NULL,
+    who_is_booking TEXT DEFAULT 'Student',
+    parent_guardian_name TEXT,
+    parent_guardian_mobile TEXT,
+    current_class TEXT,
+    preferred_career TEXT,
     current_qualification TEXT NOT NULL,
     preferred_program TEXT NOT NULL,
     preferred_specialization TEXT,
@@ -52,6 +63,12 @@ CREATE TABLE IF NOT EXISTS counselling_requests (
     full_name TEXT NOT NULL,
     mobile_number TEXT NOT NULL,
     email TEXT,
+    who_is_booking TEXT DEFAULT 'Student',
+    parent_guardian_name TEXT,
+    parent_guardian_mobile TEXT,
+    counselling_mode TEXT DEFAULT 'Online Meeting',
+    current_class TEXT,
+    preferred_career TEXT,
     counselling_category TEXT NOT NULL, -- 'Classes 5–7', 'Classes 8–10', 'Classes 11–12', 'Graduate / Recent Graduate', 'Working Professional'
     preferred_mode TEXT NOT NULL DEFAULT 'Online', -- 'Online', 'Phone', 'In-person'
     preferred_date DATE,
@@ -59,6 +76,34 @@ CREATE TABLE IF NOT EXISTS counselling_requests (
     message TEXT,
     internal_notes TEXT
 );
+
+-- 4B. SITE SETTINGS TABLE (Psychometric Link & Map Configuration)
+CREATE TABLE IF NOT EXISTS site_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Ensure backwards-compatibility with existing tables
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS who_is_booking TEXT;
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS parent_guardian_name TEXT;
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS parent_guardian_mobile TEXT;
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS counselling_mode TEXT;
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS current_class TEXT;
+ALTER TABLE career_guidance_leads ADD COLUMN IF NOT EXISTS preferred_career TEXT;
+
+ALTER TABLE admission_enquiries ADD COLUMN IF NOT EXISTS who_is_booking TEXT;
+ALTER TABLE admission_enquiries ADD COLUMN IF NOT EXISTS parent_guardian_name TEXT;
+ALTER TABLE admission_enquiries ADD COLUMN IF NOT EXISTS parent_guardian_mobile TEXT;
+ALTER TABLE admission_enquiries ADD COLUMN IF NOT EXISTS current_class TEXT;
+ALTER TABLE admission_enquiries ADD COLUMN IF NOT EXISTS preferred_career TEXT;
+
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS who_is_booking TEXT;
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS parent_guardian_name TEXT;
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS parent_guardian_mobile TEXT;
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS counselling_mode TEXT;
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS current_class TEXT;
+ALTER TABLE counselling_requests ADD COLUMN IF NOT EXISTS preferred_career TEXT;
 
 -- 5. UNIVERSITIES TABLE
 CREATE TABLE IF NOT EXISTS universities (

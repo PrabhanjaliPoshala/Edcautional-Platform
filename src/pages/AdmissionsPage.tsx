@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { admissionCategories, AdmissionCategory } from '../data/admissionsData';
+import { OnlineCertificationsSection } from '../components/sections/OnlineCertificationsSection';
 import { 
   GraduationCap, 
   ArrowRight, 
@@ -9,7 +10,8 @@ import {
   BookOpen, 
   Briefcase, 
   Sparkles,
-  PhoneCall
+  PhoneCall,
+  Award
 } from 'lucide-react';
 
 interface AdmissionsPageProps {
@@ -65,6 +67,104 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
               Search Program Directory
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Priority Admission Categories Grid (Requirement 8) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+        <div className="text-left mb-6">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#C99A2E] font-mono">
+            ADMISSION PORTFOLIO
+          </span>
+          <h2 className="text-2xl font-bold text-[#0B2A52] font-display mt-0.5">
+            Key Admission Categories
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600">
+            Select your target academic category to receive structured admission advice and direct desk assistance.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
+          {[
+            {
+              title: 'UG Admissions',
+              desc: 'Full-time campus undergraduate programs across Engineering (B.Tech), Business (BBA, B.Com), Law & Humanities.',
+              highlights: ['Direct Institutional Merit Seats', 'Entrance Strategy (JEE/CUET)', 'Verified NAAC Campus Facilities'],
+              icon: <GraduationCap className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'UG Admissions'
+            },
+            {
+              title: 'PG Admissions',
+              desc: 'Premier postgraduate master’s degrees including MBA, MCA, M.Tech, M.Com and specialized postgraduate faculties.',
+              highlights: ['Corporate Internship Affiliations', 'Dual Specialization Options', 'Merit Scholarship Assistance'],
+              icon: <Briefcase className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'PG Admissions'
+            },
+            {
+              title: 'Medical Admissions',
+              desc: 'MBBS, BDS, Bachelor of Physiotherapy (BPT), B.Pharm, B.Sc Nursing, and advanced clinical paramedical diagnostics.',
+              highlights: ['Teaching Hospital Rotations', 'State Medical Council Approved', 'Clinical Equipment Labs'],
+              icon: <ShieldCheck className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'Medical Admissions'
+            },
+            {
+              title: 'Online Programs',
+              desc: '100% accredited UGC-DEB recognized online bachelor’s and master’s degrees (Online MBA, MCA, BBA, B.Com).',
+              highlights: ['Learn Anywhere via Mobile LMS', 'Weekend Live Masterclasses', 'Degrees Valid for Govt & Corporates'],
+              icon: <BookOpen className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'Online Programs'
+            },
+            {
+              title: 'Certifications',
+              desc: 'High-impact industry micro-credentials in AI, cloud computing, financial analytics, digital marketing, and HR tech.',
+              highlights: ['Corporate Partner Badges', 'Weekend Fast-Track Batches', 'Hands-On Capstone Projects'],
+              icon: <Sparkles className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'Certifications'
+            },
+            {
+              title: 'Executive Programs',
+              desc: '1-Year Executive MBAs, Senior Management Programs, and CXO strategic leadership cohorts for working professionals.',
+              highlights: ['Peer Cohorts with 3+ Yrs Exp', 'Central Business Hub Campuses', 'Direct Executive Alumni Network'],
+              icon: <Award className="w-6 h-6 text-[#C99A2E]" />,
+              query: 'Executive Programs'
+            }
+          ].map((card, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col justify-between hover:border-[#0B2A52] shadow-2xs hover:shadow-md transition-all group"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 group-hover:bg-[#0B2A52] group-hover:text-white transition-colors">
+                  {card.icon}
+                </div>
+                <h3 className="text-lg font-bold text-[#0B2A52] font-display">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                  {card.desc}
+                </p>
+                <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+                  {card.highlights.map((h, i) => (
+                    <div key={i} className="flex items-center gap-1.5 text-[11px] text-slate-700">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => onOpenAdmissionModal(card.query)}
+                  className="w-full py-2.5 px-4 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <GraduationCap className="w-4 h-4 shrink-0" />
+                  <span>Enquire for {card.title}</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -194,6 +294,14 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Online Certifications & Executive Programmes Portfolio */}
+      <div className="border-t border-slate-200 bg-slate-50/60">
+        <OnlineCertificationsSection 
+          onOpenAdmissionModal={onOpenAdmissionModal}
+          onNavigate={onNavigate}
+        />
+      </div>
 
     </div>
   );

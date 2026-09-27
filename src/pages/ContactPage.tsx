@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CareerGuidanceForm } from '../components/forms/CareerGuidanceForm';
-import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck } from 'lucide-react';
+import { getSiteSettings, SiteSettings } from '../services/settingsService';
+import { MapPin, Phone, Mail, Clock, ShieldCheck, Navigation } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
+  const [settings, setSettings] = useState<SiteSettings>(getSiteSettings());
+
+  useEffect(() => {
+    setSettings(getSiteSettings());
+  }, []);
+
   return (
     <div className="space-y-16 pb-20 text-left">
       
@@ -30,16 +37,16 @@ export const ContactPage: React.FC = () => {
             
             <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs">
               <h2 className="text-xl font-bold text-[#0B2A52] font-display">
-                National Coordination Desks
+                Headquarters & National Coordination Desks
               </h2>
 
               <div className="space-y-4 text-xs sm:text-sm text-slate-700">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[#C99A2E] shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-bold text-slate-900">Corporate Admissions Hub (Delhi NCR)</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      CareerVerse India, Corporate Education Towers, Barakhamba Road, Connaught Place, New Delhi 110001
+                    <h3 className="font-bold text-slate-900">CareerVerse India Headquarters</h3>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                      23-11-271, S V Nagar, Revenue Ward No. 23, Tirupati – 517501
                     </p>
                   </div>
                 </div>
@@ -47,9 +54,9 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[#C99A2E] shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-bold text-slate-900">Southern Regional Desk (Bengaluru)</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      CareerVerse Centre, 4th Block, Koramangala, Bengaluru, Karnataka 560034
+                    <h3 className="font-bold text-slate-900">National Student Advisory Network</h3>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                      Career Counselling & Admission Support Across India (Online & Regional Desks)
                     </p>
                   </div>
                 </div>
@@ -111,6 +118,58 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <CareerGuidanceForm />
+          </div>
+
+        </div>
+      </section>
+
+      {/* EMBEDDED MAP SECTION (Requirement 11) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          
+          <div className="p-6 sm:p-8 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C99A2E] font-mono">
+                VISIT US
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-[#0B2A52] font-display mt-0.5 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-[#C99A2E]" />
+                <span>Office Location & Interactive Map</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                <strong className="text-slate-800">Office Location:</strong> {settings.office_location}
+              </p>
+            </div>
+
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.office_location)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 py-2 px-4 bg-slate-100 hover:bg-slate-200 text-[#0B2A52] text-xs font-semibold rounded-lg transition-colors shrink-0 self-start sm:self-auto cursor-pointer"
+            >
+              <Navigation className="w-3.5 h-3.5 text-[#C99A2E]" />
+              <span>Get Directions</span>
+            </a>
+          </div>
+
+          {/* Google Maps Embed iFrame */}
+          <div className="w-full h-80 sm:h-96 bg-slate-100 relative">
+            {settings.map_embed_url ? (
+              <iframe
+                title="CareerVerse Office Location Map"
+                src={settings.map_embed_url}
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 p-4">
+                <MapPin className="w-8 h-8 text-[#C99A2E] mb-2" />
+                <p className="text-sm font-semibold">{settings.office_location}</p>
+                <p className="text-xs text-slate-400 mt-1">Configure map link in Staff Portal Settings</p>
+              </div>
+            )}
           </div>
 
         </div>

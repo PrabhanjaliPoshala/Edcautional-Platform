@@ -2,19 +2,19 @@ import React from 'react';
 
 interface BrandLogoProps {
   className?: string;
-  variant?: 'light' | 'dark'; // 'dark' = for light backgrounds (dark navy text), 'light' = for dark backgrounds (white text)
+  variant?: 'light' | 'dark'; // 'dark' = for light backgrounds (navy & gold), 'light' = for dark backgrounds (white & gold)
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  showTagline?: boolean;
+  withWhiteBg?: boolean;
 }
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   variant = 'dark',
   size = 'md',
+  withWhiteBg = false,
 }) => {
   const isLight = variant === 'light';
 
-  // Sizing mapping for height
   const heightClasses = {
     sm: 'h-8 sm:h-9',
     md: 'h-10 sm:h-12',
@@ -22,16 +22,16 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     xl: 'h-16 sm:h-20',
   };
 
-  const logoSrc = isLight 
-    ? '/careerverse-logo-white.svg' 
-    : '/careerverse-logo.svg';
+  const logoSrc = withWhiteBg
+    ? '/careerverse-logo-white-bg.svg'
+    : (isLight ? '/careerverse-logo-white.svg' : '/careerverse-logo.svg');
 
   return (
     <div className={`inline-flex items-center select-none ${className}`}>
       <img
         src={logoSrc}
         alt="CareerVerse India - Guiding Careers. Building Futures."
-        className={`${heightClasses[size]} w-auto object-contain transition-transform duration-200 hover:scale-[1.02]`}
+        className={`${heightClasses[size]} w-auto object-contain transition-transform duration-200 hover:scale-[1.015]`}
         loading="eager"
       />
     </div>

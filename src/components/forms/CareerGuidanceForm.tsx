@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { submitCareerGuidance } from '../../services/leadService';
-import { CounsellingMode } from '../../types';
-import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { getSiteSettings } from '../../services/settingsService';
+import { WhoIsBooking, CounsellingMode } from '../../types';
+import { CheckCircle2, AlertCircle, Loader2, Sparkles, ExternalLink, Check } from 'lucide-react';
 
 interface CareerGuidanceFormProps {
   initialQualification?: string;
@@ -10,24 +11,110 @@ interface CareerGuidanceFormProps {
   onSuccessClose?: () => void;
 }
 
+const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
+  'Class 5 to 7': [
+    'Foundational Learning & Skill Building',
+    'Olympiad & Talent Exams Preparation',
+    'Early Subject Aptitude Assessment',
+    'General Guidance'
+  ],
+  'Class 8 to 10': [
+    'Stream Selection (Science / Commerce / Arts)',
+    'Board Exam Study Strategy',
+    'Early Career & Hobby Discovery',
+    'NTSE & Olympiads Preparation',
+    'General Guidance'
+  ],
+  'Intermediate (11th & 12th)': [
+    'Engineering Entrance (JEE / State CETs)',
+    'Medical & Allied Health (NEET / BPT / Nursing)',
+    'Commerce, CA Foundation & CS',
+    'Law (CLAT / AILET)',
+    'Liberal Arts, Humanities & Design (NID/UCEED)',
+    'Overseas / Abroad Education Planning',
+    'General Guidance'
+  ],
+  'Degree / Graduation': [
+    'Postgraduate Admissions (GATE / CAT / GRE / GMAT)',
+    'Campus Placements & IT Job Readiness',
+    'Government Exams & Civil Services (UPSC / State PSC)',
+    'Career Transition & Skill Switch',
+    'General Guidance'
+  ],
+  'Working Professional': [
+    'Executive MBA & Global Management',
+    'Tech & AI Leadership Upskilling',
+    'Mid-Career Domain Transition',
+    'Senior Leadership Certifications',
+    'General Guidance'
+  ]
+};
+
+const CAREER_PREFERENCE_EXAMPLES = [
+  'Engineering',
+  'Medical',
+  'Management',
+  'Law',
+  'Arts',
+  'Government Jobs',
+  'IT',
+  'Other'
+];
+
 export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
   initialQualification = '',
   initialStage = '',
   initialField = '',
   onSuccessClose
 }) => {
+  // Map initialStage to matching category if applicable
+  const getInitialCategory = (): string => {
+    if (initialStage.includes('5–7') || initialStage.includes('5 to 7')) return 'Class 5 to 7';
+    if (initialStage.includes('8–10') || initialStage.includes('8 to 10')) return 'Class 8 to 10';
+    if (initialStage.includes('11–12') || initialStage.includes('Intermediate')) return 'Intermediate (11th & 12th)';
+    if (initialStage.includes('Graduate') || initialStage.includes('Degree')) return 'Degree / Graduation';
+    if (initialStage.includes('Professional')) return 'Working Professional';
+    return '';
+  };
+
+  const [whoIsBooking, setWhoIsBooking] = useState<WhoIsBooking>('Student');
+  const [parentGuardianName, setParentGuardianName] = useState('');
+  const [parentGuardianMobile, setParentGuardianMobile] = useState('');
+
+  const [careerCategory, setCareerCategory] = useState<string>(getInitialCategory());
+  const [careerSubcategory, setCareerSubcategory] = useState<string>('');
+
+  const [currentClass, setCurrentClass] = useState<string>(initialStage || initialQualification);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(() => {
+    if (initialField) {
+      return initialField.split(',').map(s => s.trim()).filter(Boolean).slice(0, 3);
+    }
+    return [];
+  });
+  const [customCareer, setCustomCareer] = useState<string>('');
+
+  const toggleInterest = (item: string) => {
+    if (selectedInterests.includes(item)) {
+      setSelectedInterests(prev => prev.filter(i => i !== item));
+    } else {
+      if (selectedInterests.length >= 3) {
+        return; // Maximum 3 allowed
+      }
+      setSelectedInterests(prev => [...prev, item]);
+    }
+  };
+
+  const [counsellingMode, setCounsellingMode] = useState<CounsellingMode>('Online Meeting');
+
   const [formData, setFormData] = useState({
     fullName: '',
     mobileNumber: '',
     email: '',
-    currentQualification: initialStage || initialQualification,
     schoolCollege: '',
     city: '',
     state: '',
-    interestedField: initialField,
     preferredCourse: '',
     careerGoal: '',
-    preferredCounsellingMode: 'Online' as CounsellingMode,
     message: ''
   });
 
@@ -35,7 +122,9 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const settings = getSiteSettings();
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -45,32 +134,71 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
     setErrorMsg('');
 
     // Validation
-    if (!formData.fullName.trim()) {
-      setErrorMsg('Please enter your full name.');
-      return;
-    }
-    if (!formData.mobileNumber.trim() || formData.mobileNumber.trim().length < 10) {
-      setErrorMsg('Please enter a valid 10-digit mobile number.');
-      return;
-    }
-    if (!formData.currentQualification.trim()) {
-      setErrorMsg('Please specify your current class or qualification.');
+    if (!whoIsBooking) {
+      setErrorMsg('Please select who is booking the session.');
       return;
     }
 
+    if ((whoIsBooking === 'Parent' || whoIsBooking === 'Guardian')) {
+      if (!parentGuardianName.trim()) {
+        setErrorMsg('Please enter Parent/Guardian Name.');
+        return;
+      }
+      if (!parentGuardianMobile.trim() || parentGuardianMobile.trim().length < 10) {
+        setErrorMsg('Please enter a valid 10-digit Parent/Guardian Mobile.');
+        return;
+      }
+    }
+
+    if (!formData.fullName.trim()) {
+      setErrorMsg('Please enter Student / Candidate Name.');
+      return;
+    }
+    if (!formData.mobileNumber.trim() || formData.mobileNumber.trim().length < 10) {
+      setErrorMsg('Please enter a valid 10-digit Mobile Number.');
+      return;
+    }
+
+    if (!careerCategory) {
+      setErrorMsg('Please select Career Guidance Category.');
+      return;
+    }
+
+    if (!currentClass.trim()) {
+      setErrorMsg('Please enter Current Class / Current Qualification.');
+      return;
+    }
+
+    if (!counsellingMode) {
+      setErrorMsg('Please select Counselling Mode.');
+      return;
+    }
+
+    const effectiveCareer = selectedInterests
+      .map(item => (item === 'Other' && customCareer.trim()) ? customCareer.trim() : item)
+      .join(', ');
+
     setLoading(true);
     const res = await submitCareerGuidance({
+      who_is_booking: whoIsBooking,
+      parent_guardian_name: (whoIsBooking === 'Parent' || whoIsBooking === 'Guardian') ? parentGuardianName.trim() : undefined,
+      parent_guardian_mobile: (whoIsBooking === 'Parent' || whoIsBooking === 'Guardian') ? parentGuardianMobile.trim() : undefined,
+      career_guidance_category: careerCategory,
+      career_guidance_subcategory: careerSubcategory || undefined,
+      counselling_mode: counsellingMode,
+      current_class: currentClass.trim(),
+      preferred_career: effectiveCareer || undefined,
       full_name: formData.fullName.trim(),
       mobile_number: formData.mobileNumber.trim(),
       email: formData.email.trim() || undefined,
-      current_qualification: formData.currentQualification.trim(),
+      current_qualification: currentClass.trim(),
       school_college: formData.schoolCollege.trim() || undefined,
       city: formData.city.trim() || undefined,
       state: formData.state.trim() || undefined,
-      interested_field: formData.interestedField || undefined,
+      interested_field: effectiveCareer || undefined,
       preferred_course: formData.preferredCourse.trim() || undefined,
       career_goal: formData.careerGoal.trim() || undefined,
-      preferred_counselling_mode: formData.preferredCounsellingMode,
+      preferred_counselling_mode: counsellingMode,
       message: formData.message.trim() || undefined,
     });
     setLoading(false);
@@ -81,16 +209,17 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
         fullName: '',
         mobileNumber: '',
         email: '',
-        currentQualification: '',
         schoolCollege: '',
         city: '',
         state: '',
-        interestedField: '',
         preferredCourse: '',
         careerGoal: '',
-        preferredCounsellingMode: 'Online',
         message: ''
       });
+      setParentGuardianName('');
+      setParentGuardianMobile('');
+      setSelectedInterests([]);
+      setCustomCareer('');
     } else {
       setErrorMsg(res.error || 'Failed to submit request. Please try again.');
     }
@@ -126,6 +255,26 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      
+      {/* Psychometric Assessment Link Strip */}
+      <div className="p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg flex items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-slate-800">
+          <Sparkles className="w-4 h-4 text-[#C99A2E] shrink-0" />
+          <span>
+            <strong>Psychometric Assessment:</strong> Evaluate aptitude & interests online.
+          </span>
+        </div>
+        <a
+          href={settings.psychometric_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-3 py-1 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-bold rounded-md transition-colors shrink-0 shadow-2xs"
+        >
+          <span>Take Assessment</span>
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      </div>
+
       {errorMsg && (
         <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-lg flex items-center gap-2.5 text-xs sm:text-sm text-rose-700">
           <AlertCircle className="w-4 h-4 shrink-0" />
@@ -133,18 +282,78 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
         </div>
       )}
 
-      {/* Row 1: Name and Phone */}
+      {/* WHO IS BOOKING? (Mandatory) */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+          Who is booking? <span className="text-rose-500">*</span>
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {(['Student', 'Parent', 'Guardian'] as WhoIsBooking[]).map((opt) => (
+            <button
+              type="button"
+              key={opt}
+              onClick={() => setWhoIsBooking(opt)}
+              className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-colors cursor-pointer ${
+                whoIsBooking === opt
+                  ? 'bg-[#0B2A52] text-white border-[#0B2A52] shadow-2xs'
+                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* PARENT / GUARDIAN DETAILS (Shown only if Parent or Guardian is selected) */}
+      {(whoIsBooking === 'Parent' || whoIsBooking === 'Guardian') && (
+        <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-3 animate-fade-in">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#0B2A52] font-mono block">
+            {whoIsBooking} Contact Information
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                {whoIsBooking} Name <span className="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                value={parentGuardianName}
+                onChange={(e) => setParentGuardianName(e.target.value)}
+                placeholder={`e.g. ${whoIsBooking === 'Parent' ? 'Suresh Sharma' : 'Rajesh Verma'}`}
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                {whoIsBooking} Mobile <span className="text-rose-500">*</span>
+              </label>
+              <input
+                type="tel"
+                required
+                value={parentGuardianMobile}
+                onChange={(e) => setParentGuardianMobile(e.target.value)}
+                placeholder="+91 98765 43210"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Student / Candidate Name & Mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Full Name <span className="text-rose-500">*</span>
+            Student / Candidate Name <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
             name="fullName"
             required
             value={formData.fullName}
-            onChange={handleChange}
+            onChange={handleTextChange}
             placeholder="e.g. Aarav Sharma"
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
@@ -159,53 +368,191 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
             name="mobileNumber"
             required
             value={formData.mobileNumber}
-            onChange={handleChange}
+            onChange={handleTextChange}
             placeholder="+91 63034 64800"
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
         </div>
       </div>
 
-      {/* Row 2: Email and Qualification */}
+      {/* Email Address */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1">
+          Email Address (Optional)
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleTextChange}
+          placeholder="aarav@example.com"
+          className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
+        />
+      </div>
+
+      {/* CAREER GUIDANCE CATEGORY (Mandatory) & OPTIONAL SUB-CATEGORY */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Email Address
+            Career Guidance Category <span className="text-rose-500">*</span>
           </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="aarav@example.com"
+          <select
+            required
+            value={careerCategory}
+            onChange={(e) => {
+              setCareerCategory(e.target.value);
+              setCareerSubcategory('');
+            }}
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          />
+          >
+            <option value="">Select Category *</option>
+            <option value="Class 5 to 7">Class 5 to 7</option>
+            <option value="Class 8 to 10">Class 8 to 10</option>
+            <option value="Intermediate (11th & 12th)">Intermediate (11th & 12th)</option>
+            <option value="Degree / Graduation">Degree / Graduation</option>
+            <option value="Working Professional">Working Professional</option>
+          </select>
         </div>
 
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Current Class / Qualification <span className="text-rose-500">*</span>
+            Sub-Category (Optional)
           </label>
           <select
-            name="currentQualification"
-            required
-            value={formData.currentQualification}
-            onChange={handleChange}
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
+            value={careerSubcategory}
+            onChange={(e) => setCareerSubcategory(e.target.value)}
+            disabled={!careerCategory}
+            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors disabled:opacity-50"
           >
-            <option value="">Select qualification</option>
-            <option value="Class 5–7 (Middle School)">Class 5–7 (Middle School)</option>
-            <option value="Class 8–10 (Secondary School)">Class 8–10 (Secondary School)</option>
-            <option value="Class 11 (Science / Commerce / Arts)">Class 11 (Science / Commerce / Arts)</option>
-            <option value="Class 12 (Board / Entrance Aspirant)">Class 12 (Board / Entrance Aspirant)</option>
-            <option value="Undergraduate Student">Undergraduate Student</option>
-            <option value="Graduate / Recent Graduate">Graduate / Recent Graduate</option>
-            <option value="Working Professional">Working Professional</option>
+            <option value="">Select Sub-Category (Optional)</option>
+            {careerCategory && CATEGORY_SUBCATEGORIES[careerCategory]?.map((sub, i) => (
+              <option key={i} value={sub}>{sub}</option>
+            ))}
           </select>
         </div>
       </div>
 
-      {/* Row 3: School/College and City */}
+      {/* CURRENT CLASS / CURRENT QUALIFICATION (Mandatory) */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1">
+          Current Class / Current Qualification <span className="text-rose-500">*</span>
+        </label>
+        <input
+          type="text"
+          required
+          list="current-class-options"
+          value={currentClass}
+          onChange={(e) => setCurrentClass(e.target.value)}
+          placeholder="e.g. Class 8, Class 10, Intermediate MPC, Intermediate BiPC, B.Tech, B.Com, MBA, etc."
+          className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
+        />
+        <datalist id="current-class-options">
+          <option value="Class 8" />
+          <option value="Class 9" />
+          <option value="Class 10" />
+          <option value="Intermediate MPC" />
+          <option value="Intermediate BiPC" />
+          <option value="Intermediate Commerce / MEC" />
+          <option value="Intermediate Arts / CEC" />
+          <option value="B.Tech Computer Science" />
+          <option value="B.Tech Core Engineering" />
+          <option value="B.Com" />
+          <option value="BBA" />
+          <option value="BCA" />
+          <option value="B.Sc" />
+          <option value="MBA" />
+          <option value="Working Professional (IT)" />
+          <option value="Working Professional (Operations/Sales)" />
+        </datalist>
+      </div>
+
+      {/* PREFERRED CAREER / INTEREST AREA (Multiple Selection - Select up to 3) */}
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="block text-xs font-semibold text-slate-700">
+            Preferred Career / Interest Area <span className="text-slate-400 font-normal">(Select up to 3)</span>
+          </label>
+          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full transition-colors ${
+            selectedInterests.length === 3 
+              ? 'bg-amber-100 text-amber-800 border border-amber-200' 
+              : selectedInterests.length > 0 
+                ? 'bg-blue-50 text-[#0B2A52] border border-blue-200' 
+                : 'bg-slate-100 text-slate-500'
+          }`}>
+            {selectedInterests.length} of 3 selected
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+          {CAREER_PREFERENCE_EXAMPLES.map((item) => {
+            const isSelected = selectedInterests.includes(item);
+            const isMaxReached = selectedInterests.length >= 3 && !isSelected;
+            return (
+              <button
+                type="button"
+                key={item}
+                onClick={() => toggleInterest(item)}
+                className={`py-2 px-2.5 text-xs font-medium rounded-lg border text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  isSelected
+                    ? 'bg-[#0B2A52] text-white border-[#0B2A52] shadow-xs font-semibold'
+                    : isMaxReached
+                      ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'
+                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400'
+                }`}
+                title={isMaxReached ? 'Maximum 3 interests already selected. Click a selected interest to deselect it.' : undefined}
+              >
+                {isSelected && (
+                  <Check className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                )}
+                <span>{item}</span>
+              </button>
+            );
+          })}
+        </div>
+        {selectedInterests.length === 3 && (
+          <p className="text-[11px] text-amber-800 bg-amber-50 px-2.5 py-1 rounded border border-amber-200 mb-2">
+            ✓ Maximum 3 interests selected. Click any selected interest to change your choices.
+          </p>
+        )}
+        {selectedInterests.includes('Other') && (
+          <div className="mt-1 p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+            <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+              Custom Career / Domain Preference
+            </label>
+            <input
+              type="text"
+              value={customCareer}
+              onChange={(e) => setCustomCareer(e.target.value)}
+              placeholder="Type your custom career preference or domain..."
+              className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-md focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* COUNSELLING MODE (Mandatory) */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+          Counselling Mode <span className="text-rose-500">*</span>
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {(['Online Meeting', 'Phone Call', 'In-Person'] as CounsellingMode[]).map((mode) => (
+            <button
+              type="button"
+              key={mode}
+              onClick={() => setCounsellingMode(mode)}
+              className={`py-2 text-xs font-semibold rounded-lg border text-center transition-colors cursor-pointer ${
+                counsellingMode === mode
+                  ? 'bg-[#0B2A52] text-white border-[#0B2A52] shadow-2xs'
+                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              {mode}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* School/College and City */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -215,7 +562,7 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
             type="text"
             name="schoolCollege"
             value={formData.schoolCollege}
-            onChange={handleChange}
+            onChange={handleTextChange}
             placeholder="e.g. DPS R.K. Puram"
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
@@ -230,7 +577,7 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
               type="text"
               name="city"
               value={formData.city}
-              onChange={handleChange}
+              onChange={handleTextChange}
               placeholder="City"
               className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
             />
@@ -238,7 +585,7 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
               type="text"
               name="state"
               value={formData.state}
-              onChange={handleChange}
+              onChange={handleTextChange}
               placeholder="State"
               className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
             />
@@ -246,84 +593,7 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
         </div>
       </div>
 
-      {/* Row 4: Interested Field and Preferred Course */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Interested Field
-          </label>
-          <select
-            name="interestedField"
-            value={formData.interestedField}
-            onChange={handleChange}
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          >
-            <option value="">Select Field (Optional)</option>
-            <option value="Medical & Allied Sciences">Medical & Allied Sciences</option>
-            <option value="Engineering & Technology">Engineering & Technology</option>
-            <option value="Science & IT">Science & IT</option>
-            <option value="Commerce & Management">Commerce & Management</option>
-            <option value="Arts & Humanities">Arts & Humanities</option>
-            <option value="Law">Law & Legal Studies</option>
-            <option value="Not Sure / Need Assessment">Not Sure / Need Assessment</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Preferred Course or Degree
-          </label>
-          <input
-            type="text"
-            name="preferredCourse"
-            value={formData.preferredCourse}
-            onChange={handleChange}
-            placeholder="e.g. B.Tech, BBA, BPT, etc."
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          />
-        </div>
-      </div>
-
-      {/* Row 5: Career Goal and Preferred Mode */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Career Goal / Target
-          </label>
-          <input
-            type="text"
-            name="careerGoal"
-            value={formData.careerGoal}
-            onChange={handleChange}
-            placeholder="e.g. Software Architect, Doctor, Corporate Lawyer"
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Preferred Counselling Mode
-          </label>
-          <div className="flex gap-2">
-            {(['Online', 'Phone', 'In-person'] as CounsellingMode[]).map((mode) => (
-              <button
-                type="button"
-                key={mode}
-                onClick={() => setFormData(prev => ({ ...prev, preferredCounsellingMode: mode }))}
-                className={`flex-1 py-2 text-xs font-semibold rounded-lg border transition-colors cursor-pointer ${
-                  formData.preferredCounsellingMode === mode
-                    ? 'bg-[#0B2A52] text-white border-[#0B2A52]'
-                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                }`}
-              >
-                {mode}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Message */}
+      {/* Specific Query / Doubts */}
       <div>
         <label className="block text-xs font-semibold text-slate-700 mb-1">
           Your Specific Query or Doubts
@@ -332,8 +602,8 @@ export const CareerGuidanceForm: React.FC<CareerGuidanceFormProps> = ({
           name="message"
           rows={3}
           value={formData.message}
-          onChange={handleChange}
-          placeholder="Tell us what guidance you need (stream selection, college shortlisting, exams, etc.)..."
+          onChange={handleTextChange}
+          placeholder="Tell us what guidance you need (stream selection, college shortlisting, entrance exams, etc.)..."
           className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
         />
       </div>

@@ -4,6 +4,7 @@ import { initialPrograms } from '../data/programsData';
 import { counsellingPathways, CounsellingPathway } from '../data/counsellingData';
 import { ProgramCard } from '../components/cards/ProgramCard';
 import { StageCard } from '../components/cards/StageCard';
+import { OnlineCertificationsSection } from '../components/sections/OnlineCertificationsSection';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/common/ScrollReveal';
 import { Program } from '../types';
 import { 
@@ -23,7 +24,7 @@ import {
 interface HomePageProps {
   onNavigate: (path: string) => void;
   onOpenGuidanceModal: (initialStage?: string) => void;
-  onOpenAdmissionModal: (program?: Program) => void;
+  onOpenAdmissionModal: (program?: Program | string) => void;
   onOpenCounsellingModal: () => void;
   onSelectProgram: (slug: string) => void;
   onSelectPathway: (pathway: CounsellingPathway) => void;
@@ -76,14 +77,14 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* Supporting Text */}
               <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-normal">
-                Personalized Career Counselling & Admission Guidance for Students, Graduates and Working Professionals.
+                Career Counselling & Admission Support Across India for Students, Graduates and Working Professionals.
               </p>
 
               {/* Core Pillars Line */}
               <div className="pt-2 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs sm:text-sm text-slate-300">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-[#C99A2E]" />
-                  <span>Scientific Career Counselling</span>
+                  <span>Guiding Students Across India</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-[#C99A2E]" />
@@ -183,6 +184,63 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </motion.div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          ACHIEVEMENT COUNTERS (Requirement 1: 1000+ Students & Admissions)
+          ======================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-14 relative z-20">
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-200/90 p-6 sm:p-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
+            <div className="text-center pt-2 lg:pt-0">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2A52] font-display">
+                1000+
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
+                Students Guided Across India
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                Empowered with scientific counselling & clarity
+              </div>
+            </div>
+
+            <div className="text-center pt-2 lg:pt-0 lg:pl-6">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#C99A2E] font-display">
+                1000+
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
+                Admissions Facilitated
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                Across engineering, medical & management faculties
+              </div>
+            </div>
+
+            <div className="text-center pt-4 lg:pt-0 lg:pl-6">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2A52] font-display">
+                100+
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
+                Partner Institutions & Colleges
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                UGC, AICTE & NAAC accredited campuses
+              </div>
+            </div>
+
+            <div className="text-center pt-4 lg:pt-0 lg:pl-6">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2A52] font-display">
+                100%
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
+                Objective & Independent
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                Zero commercial quotas · Student-first ethos
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -440,6 +498,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* ========================================================
+          ONLINE CERTIFICATIONS & EXECUTIVE PROGRAMMES SECTION
+          ======================================================== */}
+      <OnlineCertificationsSection 
+        onOpenAdmissionModal={onOpenAdmissionModal} 
+        onNavigate={onNavigate} 
+      />
+
+      {/* ========================================================
           SECTION 5: HOW CAREERVERSE WORKS
           ======================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -451,73 +517,142 @@ export const HomePage: React.FC<HomePageProps> = ({
             How CareerVerse Works
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-600">
-            A 5-step structured journey from uncertainty to confident enrolment.
+            A comprehensive 21-step structured journey from initial student enquiry to confirmed college reporting and alumni networking.
           </p>
+          <div className="pt-3">
+            <button
+              type="button"
+              onClick={() => onNavigate('/how-it-works')}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A52] hover:text-[#C99A2E] bg-amber-50 hover:bg-amber-100/70 border border-amber-200 px-4 py-2 rounded-lg transition-colors cursor-pointer"
+            >
+              <span>View Full 21-Step Process Flow</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#C99A2E]" />
+            </button>
+          </div>
         </ScrollReveal>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-6 text-left" staggerDelay={0.07}>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left" staggerDelay={0.07}>
           
           <StaggerItem className="h-full">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative h-full flex flex-col justify-between">
-              <div>
-                <div className="text-2xl font-black text-[#C99A2E] font-display">01</div>
-                <h3 className="mt-2 text-base font-bold text-[#0B2A52] font-display">Discover</h3>
-                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Tell us about yourself, current academic scores, interests, preferences, and long-term career aspirations.
-                </p>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#0B2A52] transition-colors relative h-full flex flex-col justify-between shadow-xs">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#C99A2E] font-mono uppercase tracking-wider">PHASE 01</span>
+                  <span className="text-[11px] font-semibold text-slate-500 font-mono">Steps 01–05</span>
+                </div>
+                <h3 className="text-base font-bold text-[#0B2A52] font-display">
+                  Initial Discovery & Intake
+                </h3>
+                <ul className="text-xs text-slate-600 space-y-1.5 pt-1">
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">01.</span> Student Enquiry</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">02.</span> Enquiry Form</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">03.</span> Lead Qualification</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">04.</span> Career Counselling</li>
+                  <li className="flex items-center gap-1.5 font-semibold text-[#0B2A52]"><span className="text-[#C99A2E] font-bold">05.</span> Psychometric Test + Guidance</li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <span>Profile Mapping</span>
+                <span className="text-[#C99A2E] font-bold">↓</span>
               </div>
             </div>
           </StaggerItem>
 
           <StaggerItem className="h-full">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative h-full flex flex-col justify-between">
-              <div>
-                <div className="text-2xl font-black text-[#C99A2E] font-display">02</div>
-                <h3 className="mt-2 text-base font-bold text-[#0B2A52] font-display">Understand</h3>
-                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Explore suitable career domains, stream fits, subject combinations, and viable future employment trajectories.
-                </p>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#0B2A52] transition-colors relative h-full flex flex-col justify-between shadow-xs">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#C99A2E] font-mono uppercase tracking-wider">PHASE 02</span>
+                  <span className="text-[11px] font-semibold text-slate-500 font-mono">Steps 06–09</span>
+                </div>
+                <h3 className="text-base font-bold text-[#0B2A52] font-display">
+                  Course & Entrance Planning
+                </h3>
+                <ul className="text-xs text-slate-600 space-y-1.5 pt-1">
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">06.</span> Course Finalisation</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">07.</span> Merit + Budget + Location</li>
+                  <li className="flex items-center gap-1.5 font-semibold text-[#0B2A52]"><span className="text-[#C99A2E] font-bold">08.</span> Entrance Exam Planning</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">09.</span> College Shortlisting</li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <span>JEE / NEET / CUET / CAT</span>
+                <span className="text-[#C99A2E] font-bold">↓</span>
               </div>
             </div>
           </StaggerItem>
 
           <StaggerItem className="h-full">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative h-full flex flex-col justify-between">
-              <div>
-                <div className="text-2xl font-black text-[#C99A2E] font-display">03</div>
-                <h3 className="mt-2 text-base font-bold text-[#0B2A52] font-display">Shortlist</h3>
-                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Compare accredited universities, academic curricula, campus infrastructure, and genuine placement metrics.
-                </p>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#0B2A52] transition-colors relative h-full flex flex-col justify-between shadow-xs">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#C99A2E] font-mono uppercase tracking-wider">PHASE 03</span>
+                  <span className="text-[11px] font-semibold text-slate-500 font-mono">Steps 10–16</span>
+                </div>
+                <h3 className="text-base font-bold text-[#0B2A52] font-display">
+                  Application & Seat Allotment
+                </h3>
+                <ul className="text-xs text-slate-600 space-y-1.5 pt-1">
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">10.</span> Application / Registration</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">11.</span> Selection Process</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">12.</span> Offer / Seat Allotment</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">13.</span> Seat Blocking & Campus Visit</li>
+                  <li className="flex items-center gap-1.5 font-semibold text-[#0B2A52]"><span className="text-[#C99A2E] font-bold">16.</span> Admission Confirmation</li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <span>Document Verification</span>
+                <span className="text-[#C99A2E] font-bold">↓</span>
               </div>
             </div>
           </StaggerItem>
 
           <StaggerItem className="h-full">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative h-full flex flex-col justify-between">
-              <div>
-                <div className="text-2xl font-black text-[#C99A2E] font-display">04</div>
-                <h3 className="mt-2 text-base font-bold text-[#0B2A52] font-display">Decide</h3>
-                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Get personalized 1-on-1 strategic counselling to finalize courses and institutions with parent alignment.
-                </p>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#0B2A52] transition-colors relative h-full flex flex-col justify-between shadow-xs">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#C99A2E] font-mono uppercase tracking-wider">PHASE 04</span>
+                  <span className="text-[11px] font-semibold text-slate-500 font-mono">Steps 17–21</span>
+                </div>
+                <h3 className="text-base font-bold text-[#0B2A52] font-display">
+                  Onboarding & Lifetime Network
+                </h3>
+                <ul className="text-xs text-slate-600 space-y-1.5 pt-1">
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">17.</span> Pre-Joining Support</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">18.</span> College Reporting</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">19.</span> Orientation / Joining</li>
+                  <li className="flex items-center gap-1.5"><span className="text-[#C99A2E] font-bold">20.</span> Post Admission Support</li>
+                  <li className="flex items-center gap-1.5 font-semibold text-[#0B2A52]"><span className="text-[#C99A2E] font-bold">21.</span> Referral / Alumni Network</li>
+                </ul>
               </div>
-            </div>
-          </StaggerItem>
-
-          <StaggerItem className="h-full">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative h-full flex flex-col justify-between">
-              <div>
-                <div className="text-2xl font-black text-[#C99A2E] font-display">05</div>
-                <h3 className="mt-2 text-base font-bold text-[#0B2A52] font-display">Apply</h3>
-                <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Receive full support with application submissions, document verification, and admission formalities.
-                </p>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <span>Alumni Circle Access</span>
+                <span className="text-emerald-600 font-bold">✓ Complete</span>
               </div>
             </div>
           </StaggerItem>
 
         </StaggerContainer>
+
+        {/* CTA Bar below roadmap */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => onOpenAdmissionModal()}
+            className="py-3 px-6 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-extrabold text-xs sm:text-sm rounded-lg shadow-sm transition-all cursor-pointer flex items-center gap-2"
+          >
+            <GraduationCap className="w-4 h-4" />
+            <span>Admission Guidance Form</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/how-it-works')}
+            className="py-3 px-6 bg-[#0B2A52] hover:bg-[#123E73] text-white font-bold text-xs sm:text-sm rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+          >
+            <span>Explore Full 21-Step Process Flow</span>
+            <ArrowRight className="w-4 h-4 text-[#C99A2E]" />
+          </button>
+        </div>
       </section>
 
       {/* ========================================================

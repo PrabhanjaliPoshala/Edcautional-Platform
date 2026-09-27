@@ -1,5 +1,14 @@
 export type LeadStatus = 'New' | 'Contacted' | 'Follow-up' | 'Counselling Scheduled' | 'Converted' | 'Closed';
 
+export type WhoIsBooking = 'Parent' | 'Guardian' | 'Student';
+
+export type CareerGuidanceCategoryType = 
+  | 'Class 5 to 7'
+  | 'Class 8 to 10'
+  | 'Intermediate (11th & 12th)'
+  | 'Degree / Graduation'
+  | 'Working Professional';
+
 export type CounsellingStage = 
   | 'Classes 5–7'
   | 'Classes 8–10'
@@ -7,7 +16,7 @@ export type CounsellingStage =
   | 'Graduate / Recent Graduate'
   | 'Working Professional';
 
-export type CounsellingMode = 'Online' | 'Phone' | 'In-person';
+export type CounsellingMode = 'Online Meeting' | 'Phone Call' | 'In-Person' | 'Online' | 'Phone' | 'In-person';
 
 export type EducationLevel = 
   | 'Undergraduate'
@@ -38,6 +47,14 @@ export interface CareerGuidanceLead {
   full_name: string;
   mobile_number: string;
   email?: string;
+  who_is_booking?: WhoIsBooking;
+  parent_guardian_name?: string;
+  parent_guardian_mobile?: string;
+  career_guidance_category?: string;
+  career_guidance_subcategory?: string;
+  counselling_mode?: CounsellingMode | string;
+  current_class?: string;
+  preferred_career?: string;
   current_qualification: string;
   school_college?: string;
   city?: string;
@@ -45,7 +62,7 @@ export interface CareerGuidanceLead {
   interested_field?: string;
   preferred_course?: string;
   career_goal?: string;
-  preferred_counselling_mode: CounsellingMode;
+  preferred_counselling_mode?: CounsellingMode | string;
   message?: string;
   internal_notes?: string;
 }
@@ -58,12 +75,19 @@ export interface AdmissionEnquiry {
   full_name: string;
   mobile_number: string;
   email: string;
+  who_is_booking?: 'Student' | 'Parent' | 'Guardian';
+  parent_guardian_name?: string;
+  parent_guardian_mobile?: string;
+  current_class?: string;
   current_qualification: string;
   preferred_program: string;
   preferred_specialization?: string;
   preferred_location?: string;
   budget_range?: string;
   preferred_intake_year?: string;
+  preferred_career?: string;
+  counselling_mode?: CounsellingMode | string;
+  preferred_counselling_mode?: CounsellingMode | string;
   message?: string;
   internal_notes?: string;
 }
@@ -76,8 +100,15 @@ export interface CounsellingRequest {
   full_name: string;
   mobile_number: string;
   email?: string;
-  counselling_category: CounsellingStage;
-  preferred_mode: CounsellingMode;
+  who_is_booking?: WhoIsBooking;
+  parent_guardian_name?: string;
+  parent_guardian_mobile?: string;
+  counselling_mode?: CounsellingMode | string;
+  current_class?: string;
+  preferred_career?: string;
+  counselling_category: CounsellingStage | string;
+  preferred_mode?: CounsellingMode | string;
+  preferred_counselling_mode?: CounsellingMode | string;
   preferred_date?: string;
   preferred_time?: string;
   message?: string;
@@ -128,6 +159,16 @@ export interface University {
   fees_range?: string;
   important_dates: string;
   website_url?: string;
+  // Reusable College / University card enhancements:
+  logo_url?: string;
+  banner_url?: string;
+  gallery?: string[];
+  naac_grade?: string;
+  ranking?: string;
+  established_year?: number | string;
+  city?: string;
+  state?: string;
+  short_description?: string;
 }
 
 // Filter State for Program Finder

@@ -1,29 +1,38 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { counsellingPathways, CounsellingPathway } from '../data/counsellingData';
+import { counsellingPathways } from '../data/counsellingData';
 import { ScrollReveal } from '../components/common/ScrollReveal';
+import { getSiteSettings } from '../services/settingsService';
 import { 
   Compass, 
   CheckCircle2, 
   ArrowRight, 
   Target, 
-  Users, 
   GraduationCap, 
   Sparkles,
-  HelpCircle,
-  PhoneCall
+  PhoneCall, 
+  ExternalLink,
+  Brain,
+  Building2,
+  BookOpen,
+  FileText
 } from 'lucide-react';
 
 interface CareerCounsellingPageProps {
   onOpenGuidanceModal: (stageBadge?: string) => void;
+  onOpenAdmissionModal?: (programOrName?: string) => void;
   onOpenCounsellingModal: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
   onOpenGuidanceModal,
-  onOpenCounsellingModal
+  onOpenAdmissionModal,
+  onOpenCounsellingModal,
+  onNavigate
 }) => {
   const [activePathwayId, setActivePathwayId] = useState<string>('stage-11-12');
+  const settings = getSiteSettings();
 
   const selectedPathway = counsellingPathways.find(p => p.id === activePathwayId) || counsellingPathways[2];
 
@@ -36,7 +45,7 @@ export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
           <div className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest text-[#E5C66B] uppercase font-mono">
             <span>CareerVerse India</span>
             <span aria-hidden="true">·</span>
-            <span>Comprehensive Guidance</span>
+            <span>Career Pathways & Comprehensive Guidance</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-white">
@@ -44,7 +53,7 @@ export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
           </h1>
 
           <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-3xl mx-auto">
-            Personalized career guidance based on your interests, strengths, academic background, aspirations and future opportunities.
+            Personalized career counselling & admission support across India. Discover your strengths, choose optimal programs, and secure verified college admissions.
           </p>
 
           <div className="pt-4 flex flex-wrap justify-center gap-3">
@@ -63,6 +72,240 @@ export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
               Book 1-on-1 Counselling Slot
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          CORE SERVICE SECTIONS / CARDS (Requirement 4 & Requirement 3)
+          • Career Counselling
+          • Admission Guidance
+          • Psychometric Assessment
+          • Program Selection
+          • University Selection
+          ======================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10">
+        <div className="text-left mb-6">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#C99A2E] font-mono">
+            OUR CORE GUIDANCE SERVICES
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A52] font-display mt-0.5">
+            Dedicated Career & Admission Services
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600">
+            Comprehensive student-first solutions designed to support your academic and professional progression.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+          
+          {/* Service 1: Career Counselling */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-6 flex flex-col justify-between hover:border-[#0B2A52]/40 shadow-xs hover:shadow-md transition-all group">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#0B2A52] text-[#C99A2E] flex items-center justify-center mb-4 shadow-2xs">
+                <Compass className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0B2A52] font-display group-hover:text-[#123E73] transition-colors">
+                Career Counselling
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Objective, personalized evaluation to identify your natural abilities, align stream and degree choices, and develop a strategic future career roadmap.
+              </p>
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Stream Selection (Class 10 & 12)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>1-on-1 Certified Psychologist Session</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={onOpenCounsellingModal}
+                className="w-full py-2.5 px-4 bg-[#0B2A52] hover:bg-[#123E73] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-[#C99A2E]" />
+                <span>Book Career Counselling</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Service 2: Admission Guidance */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-6 flex flex-col justify-between hover:border-[#0B2A52]/40 shadow-xs hover:shadow-md transition-all group">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#0B2A52] text-[#C99A2E] flex items-center justify-center mb-4 shadow-2xs">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0B2A52] font-display group-hover:text-[#123E73] transition-colors">
+                Admission Guidance
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Direct institutional guidance across UGC-recognized universities, engineering colleges, medical faculties, and accredited online programs.
+              </p>
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Merit & Eligibility Assessment</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Document Support & Direct Coordination</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onOpenAdmissionModal) {
+                    onOpenAdmissionModal();
+                  } else {
+                    onOpenGuidanceModal();
+                  }
+                }}
+                className="w-full py-2.5 px-4 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-extrabold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5 shrink-0" />
+                <span>Admission Guidance Form</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Service 3: Psychometric Assessment (Requirement 3 - Exact Text & Button) */}
+          <div className="bg-gradient-to-br from-[#071D3A] to-[#0B2A52] text-white rounded-2xl border border-slate-700 p-6 flex flex-col justify-between shadow-md hover:shadow-xl transition-all group">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-white/10 text-[#E5C66B] flex items-center justify-center mb-4 border border-white/15">
+                <Brain className="w-6 h-6 text-[#C99A2E]" />
+              </div>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-xl font-bold text-white font-display">
+                  Psychometric Assessment
+                </h3>
+                <span className="text-[10px] font-mono uppercase bg-[#C99A2E] text-[#0B2A52] font-bold px-2 py-0.5 rounded">
+                  Scientific
+                </span>
+              </div>
+              <p className="mt-2 text-xs sm:text-sm text-slate-200 leading-relaxed">
+                Scientifically designed assessments that help students identify strengths, interests, aptitude, personality traits and suitable career pathways.
+              </p>
+              <div className="mt-4 pt-3 border-t border-white/15 space-y-1.5 text-xs text-slate-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Cognitive Aptitude & Personality Mapping</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Admin-Configured Test Portal</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-white/15">
+              <a
+                href={settings.psychometric_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-black text-xs rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+              >
+                <span>Take Psychometric Test</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Service 4: Program Selection */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-6 flex flex-col justify-between hover:border-[#0B2A52]/40 shadow-xs hover:shadow-md transition-all group">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#0B2A52] text-[#C99A2E] flex items-center justify-center mb-4 shadow-2xs">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0B2A52] font-display group-hover:text-[#123E73] transition-colors">
+                Program Selection
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Compare academic curricula, specializations, and professional degree tracks across engineering, management, clinical healthcare, and executive diplomas.
+              </p>
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Full-Time, Hybrid & UGC Online Options</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Job Market & Employability Match</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('/programs');
+                  }
+                }}
+                className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#0B2A52] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Explore Programs</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Service 5: University Selection */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-6 flex flex-col justify-between hover:border-[#0B2A52]/40 shadow-xs hover:shadow-md transition-all group md:col-span-2 lg:col-span-2">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-[#0B2A52] text-[#C99A2E] flex items-center justify-center mb-4 shadow-2xs">
+                <Building2 className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0B2A52] font-display group-hover:text-[#123E73] transition-colors">
+                University Selection
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Objective evaluation of institution statutory recognitions, NAAC accreditations, NIRF rankings, faculty excellence, and verified campus placement track records across India.
+              </p>
+              <div className="mt-4 pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Verified UGC, AICTE & Statutory Affiliations</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C99A2E] shrink-0" />
+                  <span>Institutional Comparison with No Commercial Quotas</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('/universities');
+                  }
+                }}
+                className="flex-1 py-2.5 px-4 bg-[#0B2A52] hover:bg-[#123E73] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Browse Colleges & Universities</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#C99A2E]" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onOpenGuidanceModal()}
+                className="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 text-[#0B2A52] font-bold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                Ask Counsellor for University Match
+              </button>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -289,7 +532,7 @@ export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
                   type="button"
                   onClick={() => {
                     setActivePathwayId(pathway.id);
-                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                    window.scrollTo({ top: 500, behavior: 'smooth' });
                   }}
                   className="flex-1 py-2 text-xs font-semibold text-[#0B2A52] bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors text-center cursor-pointer"
                 >

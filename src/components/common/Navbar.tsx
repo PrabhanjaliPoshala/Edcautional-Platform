@@ -90,6 +90,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <CalendarCheck className="w-4 h-4 text-[#0B2A52]" />
               <span>Book Counselling</span>
             </button>
+
+            <button
+              type="button"
+              onClick={onOpenAdmin}
+              className="p-2.5 text-slate-400 hover:text-[#0B2A52] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-slate-200"
+              title="Admin Portal Login"
+              aria-label="Admin Portal Login"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Mobile Hamburger Toggle */}

@@ -8,11 +8,26 @@ interface AdmissionEnquiryFormProps {
   onSuccessClose?: () => void;
 }
 
+const PROGRAM_EXAMPLES = [
+  'B.Tech',
+  'MBA',
+  'MCA',
+  'BBA',
+  'Medical',
+  'Law',
+  'B.Sc',
+  'B.Com',
+  'Other'
+];
+
 export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
   initialProgramName = '',
   initialLocation = '',
   onSuccessClose
 }) => {
+  const [whoIsApplying, setWhoIsApplying] = useState<'Student' | 'Parent' | 'Guardian'>('Student');
+  const [parentGuardianName, setParentGuardianName] = useState('');
+
   const [formData, setFormData] = useState({
     fullName: '',
     mobileNumber: '',
@@ -38,8 +53,16 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
     e.preventDefault();
     setErrorMsg('');
 
+    if (!whoIsApplying) {
+      setErrorMsg('Please select who is applying.');
+      return;
+    }
+    if ((whoIsApplying === 'Parent' || whoIsApplying === 'Guardian') && !parentGuardianName.trim()) {
+      setErrorMsg('Please enter Parent/Guardian Name.');
+      return;
+    }
     if (!formData.fullName.trim()) {
-      setErrorMsg('Please enter your full name.');
+      setErrorMsg('Please enter Student / Applicant Full Name.');
       return;
     }
     if (!formData.mobileNumber.trim() || formData.mobileNumber.trim().length < 10) {
@@ -51,26 +74,29 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
       return;
     }
     if (!formData.currentQualification.trim()) {
-      setErrorMsg('Please enter your current qualification.');
+      setErrorMsg('Please enter Current Class / Qualification.');
       return;
     }
     if (!formData.preferredProgram.trim()) {
-      setErrorMsg('Please state your preferred program or degree.');
+      setErrorMsg('Please specify Preferred Course / Program.');
       return;
     }
 
     setLoading(true);
     const res = await submitAdmissionEnquiry({
-       full_name: formData.fullName.trim(),
-       mobile_number: formData.mobileNumber.trim(),
-       email: formData.email.trim(),
-       current_qualification: formData.currentQualification.trim(),
-       preferred_program: formData.preferredProgram.trim(),
-       preferred_specialization: formData.preferredSpecialization.trim() || undefined,
-       preferred_location: formData.preferredLocation.trim() || undefined,
-       preferred_intake_year: formData.preferredIntakeYear || undefined,
-       message: formData.message.trim() || undefined,
-     });
+      who_is_booking: whoIsApplying,
+      parent_guardian_name: (whoIsApplying === 'Parent' || whoIsApplying === 'Guardian') ? parentGuardianName.trim() : undefined,
+      current_class: formData.currentQualification.trim(),
+      full_name: formData.fullName.trim(),
+      mobile_number: formData.mobileNumber.trim(),
+      email: formData.email.trim(),
+      current_qualification: formData.currentQualification.trim(),
+      preferred_program: formData.preferredProgram.trim(),
+      preferred_specialization: formData.preferredSpecialization.trim() || undefined,
+      preferred_location: formData.preferredLocation.trim() || undefined,
+      preferred_intake_year: formData.preferredIntakeYear || undefined,
+      message: formData.message.trim() || undefined,
+    });
     setLoading(false);
 
     if (res.success) {
@@ -86,6 +112,7 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
         preferredIntakeYear: '2026-27',
         message: ''
       });
+      setParentGuardianName('');
     } else {
       setErrorMsg(res.error || 'Failed to submit admission enquiry. Please try again.');
     }
@@ -128,11 +155,51 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
         </div>
       )}
 
+      {/* WHO IS APPLYING? (Mandatory) */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+          Who is applying? <span className="text-rose-500">*</span>
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {(['Student', 'Parent', 'Guardian'] as const).map((opt) => (
+            <button
+              type="button"
+              key={opt}
+              onClick={() => setWhoIsApplying(opt)}
+              className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-colors cursor-pointer ${
+                whoIsApplying === opt
+                  ? 'bg-[#0B2A52] text-white border-[#0B2A52] shadow-2xs'
+                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* PARENT / GUARDIAN NAME */}
+      {(whoIsApplying === 'Parent' || whoIsApplying === 'Guardian') && (
+        <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg animate-fade-in">
+          <label className="block text-xs font-semibold text-slate-700 mb-1">
+            Parent / Guardian Name <span className="text-rose-500">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            value={parentGuardianName}
+            onChange={(e) => setParentGuardianName(e.target.value)}
+            placeholder={`e.g. ${whoIsApplying === 'Parent' ? 'Suresh Sharma' : 'Rajesh Verma'}`}
+            className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden"
+          />
+        </div>
+      )}
+
       {/* Row 1: Full Name and Mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Full Name <span className="text-rose-500">*</span>
+            Student / Applicant Full Name <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
@@ -161,7 +228,7 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
         </div>
       </div>
 
-      {/* Row 2: Email and Current Qualification */}
+      {/* Row 2: Email and Current Class / Qualification */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -180,7 +247,7 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
 
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Current Qualification <span className="text-rose-500">*</span>
+            Current Class / Qualification <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
@@ -188,46 +255,64 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
             required
             value={formData.currentQualification}
             onChange={handleChange}
-            placeholder="e.g. 10+2 (PCB / PCM / Commerce), B.Com, etc."
+            placeholder="e.g. 10+2 (PCB / PCM / Commerce), B.Com, B.Tech, etc."
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
         </div>
       </div>
 
-      {/* Row 3: Preferred Program and Specialization */}
+      {/* Row 3: Preferred Course / Program (Examples: B.Tech, MBA, MCA, BBA, Medical, Law, etc.) */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1">
+          Preferred Course / Program <span className="text-rose-500">*</span>
+        </label>
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {PROGRAM_EXAMPLES.map((ex) => (
+            <button
+              type="button"
+              key={ex}
+              onClick={() => {
+                if (ex !== 'Other') {
+                  setFormData(prev => ({ ...prev, preferredProgram: ex }));
+                }
+              }}
+              className={`py-1 px-2.5 text-xs font-medium rounded-md border transition-colors cursor-pointer ${
+                formData.preferredProgram === ex
+                  ? 'bg-[#0B2A52] text-white border-[#0B2A52]'
+                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
+        <input
+          type="text"
+          name="preferredProgram"
+          required
+          value={formData.preferredProgram}
+          onChange={handleChange}
+          placeholder="e.g. B.Tech, MBA, MCA, BBA, Medical, Law, BPT, etc."
+          className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
+        />
+      </div>
+
+      {/* Row 4: Preferred Specialization & Preferred Location */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Preferred Program / Degree <span className="text-rose-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="preferredProgram"
-            required
-            value={formData.preferredProgram}
-            onChange={handleChange}
-            placeholder="e.g. B.Tech CSE, BPT, Online MBA"
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Preferred Specialization
+            Preferred Specialization (Optional)
           </label>
           <input
             type="text"
             name="preferredSpecialization"
             value={formData.preferredSpecialization}
             onChange={handleChange}
-            placeholder="e.g. Artificial Intelligence, Finance, Sports"
+            placeholder="e.g. Artificial Intelligence, Finance, Cyber Security"
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
         </div>
-      </div>
 
-      {/* Row 4: Preferred Location and Intake Year */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1">
             Preferred Location
@@ -237,29 +322,30 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
             name="preferredLocation"
             value={formData.preferredLocation}
             onChange={handleChange}
-            placeholder="e.g. Bangalore, Delhi NCR, Pune, Online"
+            placeholder="e.g. Bangalore, Delhi NCR, Pune, Hyderabad, Online"
             className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
           />
         </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Preferred Intake / Academic Year
-          </label>
-          <select
-            name="preferredIntakeYear"
-            value={formData.preferredIntakeYear}
-            onChange={handleChange}
-            className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
-          >
-            <option value="2026-27 (Upcoming Session)">2026-27 (Upcoming Session)</option>
-            <option value="Immediate / Current Intake">Immediate / Current Intake</option>
-            <option value="Next Year 2027">Next Year 2027</option>
-          </select>
-        </div>
       </div>
 
-      {/* Message */}
+      {/* Row 5: Intake Year */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1">
+          Preferred Intake / Academic Year
+        </label>
+        <select
+          name="preferredIntakeYear"
+          value={formData.preferredIntakeYear}
+          onChange={handleChange}
+          className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-[#0B2A52] focus:ring-1 focus:ring-[#0B2A52] outline-hidden transition-colors"
+        >
+          <option value="2026-27 (Upcoming Session)">2026-27 (Upcoming Session)</option>
+          <option value="Immediate / Current Intake">Immediate / Current Intake</option>
+          <option value="Next Year 2027">Next Year 2027</option>
+        </select>
+      </div>
+
+      {/* Specific Questions Message */}
       <div>
         <label className="block text-xs font-semibold text-slate-700 mb-1">
           Specific Admission Questions
@@ -291,7 +377,7 @@ export const AdmissionEnquiryForm: React.FC<AdmissionEnquiryFormProps> = ({
       </button>
 
       <p className="text-[11px] text-center text-slate-500">
-        Direct admission coordination supported by CareerVerse India partner institutional desks.
+        Direct admission coordination supported by CareerVerse India partner institutional desks. No fees or charges.
       </p>
     </form>
   );

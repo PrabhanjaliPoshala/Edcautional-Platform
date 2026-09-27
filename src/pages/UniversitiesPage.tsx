@@ -1,27 +1,38 @@
-import React, { useState } from 'react';
-import { initialUniversities } from '../data/universitiesData';
+import React, { useState, useEffect } from 'react';
+import { getStoredUniversities } from '../services/settingsService';
 import { UniversityCard } from '../components/cards/UniversityCard';
 import { Search, Building2, Award, ShieldCheck } from 'lucide-react';
+import { University } from '../types';
 
 interface UniversitiesPageProps {
   onSelectUniversity: (slug: string) => void;
-  onOpenCounsellingModal: () => void;
+  onOpenAdmissionModal?: (universityName?: string) => void;
+  onOpenCounsellingModal?: () => void;
 }
 
 export const UniversitiesPage: React.FC<UniversitiesPageProps> = ({
   onSelectUniversity,
+  onOpenAdmissionModal,
   onOpenCounsellingModal
 }) => {
+  const [universities, setUniversities] = useState<University[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredUniversities = initialUniversities.filter((univ) => {
+  useEffect(() => {
+    setUniversities(getStoredUniversities());
+  }, []);
+
+  const filteredUniversities = universities.filter((univ) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
     return (
       univ.name.toLowerCase().includes(q) ||
       univ.location.toLowerCase().includes(q) ||
+      (univ.city && univ.city.toLowerCase().includes(q)) ||
+      (univ.state && univ.state.toLowerCase().includes(q)) ||
       univ.about.toLowerCase().includes(q) ||
-      univ.accreditation.toLowerCase().includes(q)
+      univ.accreditation.toLowerCase().includes(q) ||
+      (univ.naac_grade && univ.naac_grade.toLowerCase().includes(q))
     );
   });
 
@@ -74,7 +85,7 @@ export const UniversitiesPage: React.FC<UniversitiesPageProps> = ({
               key={univ.id}
               university={univ}
               onSelectUniversity={onSelectUniversity}
-              onOpenCounsellingModal={onOpenCounsellingModal}
+              onOpenAdmissionModal={onOpenAdmissionModal}
             />
           ))}
         </div>

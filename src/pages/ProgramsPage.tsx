@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { initialPrograms } from '../data/programsData';
 import { ProgramCard } from '../components/cards/ProgramCard';
+import { OnlineCertificationsSection } from '../components/sections/OnlineCertificationsSection';
 import { Program, EducationLevel, StudyField, LocationType } from '../types';
 import { Search, Filter, RotateCcw, Sparkles } from 'lucide-react';
 
 interface ProgramsPageProps {
   onSelectProgram: (slug: string) => void;
-  onOpenAdmissionModal: (program: Program) => void;
+  onOpenAdmissionModal: (program: Program | string) => void;
 }
 
 export const ProgramsPage: React.FC<ProgramsPageProps> = ({
@@ -225,6 +226,13 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
           </div>
         )}
       </section>
+
+      {/* Online Certifications, Executive Programmes & Online Degrees Showcase */}
+      <div className="border-t border-slate-200 bg-slate-50/50">
+        <OnlineCertificationsSection 
+          onOpenAdmissionModal={(name) => onOpenAdmissionModal(name || 'Executive Programme')} 
+        />
+      </div>
 
     </div>
   );

@@ -35,16 +35,28 @@ export default function App() {
   const [guidanceModal, setGuidanceModal] = useState<{ open: boolean; stage?: string }>({ open: false });
   const [admissionModal, setAdmissionModal] = useState<{ open: boolean; programName?: string; location?: string }>({ open: false });
   const [counsellingModal, setCounsellingModal] = useState<{ open: boolean; category?: CounsellingStage }>({ open: false });
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(() => {
+    return window.location.pathname === '/admin' || window.location.hash === '#admin';
+  });
 
   // Sync with browser back/forward buttons
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+      const path = window.location.pathname || '/';
+      setCurrentPath(path);
+      if (path === '/admin' || window.location.hash === '#admin') {
+        setIsAdminOpen(true);
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  useEffect(() => {
+    if (currentPath === '/admin' || window.location.hash === '#admin') {
+      setIsAdminOpen(true);
+    }
+  }, [currentPath]);
 
   const navigate = (path: string) => {
     window.history.pushState({}, '', path);
@@ -99,6 +111,7 @@ export default function App() {
         <UniversityDetailPage
           university={selectedUniversity}
           onBack={() => navigate('/universities')}
+          onOpenAdmissionModal={openAdmissionModal}
           onOpenCounsellingModal={() => openCounsellingModal()}
           onSelectProgram={(slug) => navigate(`/programs/${slug}`)}
         />
@@ -122,10 +135,13 @@ export default function App() {
         );
 
       case '/career-counselling':
+      case '/career-pathways':
         return (
           <CareerCounsellingPage
             onOpenGuidanceModal={openGuidanceModal}
+            onOpenAdmissionModal={openAdmissionModal}
             onOpenCounsellingModal={() => openCounsellingModal()}
+            onNavigate={navigate}
           />
         );
 
@@ -149,6 +165,7 @@ export default function App() {
         return (
           <UniversitiesPage
             onSelectUniversity={(slug) => navigate(`/universities/${slug}`)}
+            onOpenAdmissionModal={openAdmissionModal}
             onOpenCounsellingModal={() => openCounsellingModal()}
           />
         );
@@ -158,6 +175,8 @@ export default function App() {
           <HowItWorksPage
             onOpenGuidanceModal={openGuidanceModal}
             onOpenCounsellingModal={() => openCounsellingModal()}
+            onOpenAdmissionModal={openAdmissionModal}
+            onNavigate={navigate}
           />
         );
 
