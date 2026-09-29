@@ -1,6 +1,6 @@
 export interface AdmissionCategory {
   id: string;
-  group: 'UG Admissions' | 'Diplomas & Professional Programs' | 'Online & Executive Education';
+  group: 'UG Admissions' | 'PG Admissions' | 'Diplomas & Professional Programs' | 'Online & Executive Education';
   name: string;
   tagline: string;
   description: string;
@@ -70,6 +70,48 @@ export const admissionCategories: AdmissionCategory[] = [
     keyDisciplines: ['Integrated BA LLB (Honours)', 'Integrated BBA LLB (Honours)', '3-Year LLB for Graduates', 'LLM Corporate Jurisprudence'],
     intakeTimeline: 'National Entrance & Direct Institutional Rounds Open',
     ctaText: 'Enquire for Law'
+  },
+
+  // PG Admissions (Requirement 5)
+  {
+    id: 'pg-mba',
+    group: 'PG Admissions',
+    name: 'MBA & Management Master’s',
+    tagline: 'Full-Time MBA, PGDM, Executive MBA & Global Pathways',
+    description: 'Premier master’s in business administration offering core specialisations in Finance, Marketing, HR, Operations, Business Analytics, and Corporate Strategy.',
+    keyDisciplines: ['MBA (Full-Time)', 'PGDM (AICTE Approved)', 'Executive MBA', 'Online MBA', 'International MBA Pathways'],
+    intakeTimeline: 'CAT / MAT / XAT / CET / Merit Rounds Active for 2026-27',
+    ctaText: 'Get MBA Admission Guidance'
+  },
+  {
+    id: 'pg-mca',
+    group: 'PG Admissions',
+    name: 'MCA & Advanced Computing',
+    tagline: 'Master of Computer Applications, AI, Data Science & Cloud',
+    description: 'Postgraduate computing programs designed for technical leadership, software engineering, cloud architecture, and artificial intelligence.',
+    keyDisciplines: ['Master of Computer Applications (MCA)', 'Online MCA in Cloud & AI', 'MCA in Cybersecurity', 'M.Sc Data Science'],
+    intakeTimeline: 'Admissions Open - Fast-Track Screening Available',
+    ctaText: 'Get MCA Admission Guidance'
+  },
+  {
+    id: 'pg-mtech',
+    group: 'PG Admissions',
+    name: 'M.Tech & Technological Sciences',
+    tagline: 'Advanced Engineering Research, Robotics, VLSI & AI Systems',
+    description: 'Master of Technology and MS by research programs at premier autonomous technological institutes and universities across India.',
+    keyDisciplines: ['M.Tech in Artificial Intelligence', 'M.Tech Computer Science', 'M.Tech VLSI & Embedded', 'M.Tech Structural Engineering'],
+    intakeTimeline: 'GATE / PGCET / Institutional Merit Rounds Active',
+    ctaText: 'Get M.Tech Admission Guidance'
+  },
+  {
+    id: 'pg-commerce-arts',
+    group: 'PG Admissions',
+    name: 'M.Com, MA & MSc Postgraduate Programs',
+    tagline: 'Humanities, Economics, Pure Sciences & Financial Studies',
+    description: 'Accredited postgraduate degrees across commerce, clinical psychology, public policy, economics, mathematics, and biotechnology.',
+    keyDisciplines: ['Master of Commerce (M.Com)', 'MA in Clinical Psychology', 'MA in Journalism & Media', 'M.Sc in Applied Mathematics / Physics'],
+    intakeTimeline: 'Academic Session 2026-27 Registrations Open',
+    ctaText: 'Get PG Admission Guidance'
   },
 
   // Diplomas & Professional Programs

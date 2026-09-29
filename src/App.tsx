@@ -17,6 +17,7 @@ import { ProgramDetailPage } from './pages/ProgramDetailPage';
 import { UniversitiesPage } from './pages/UniversitiesPage';
 import { UniversityDetailPage } from './pages/UniversityDetailPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
+import { StudentJourneyPage } from './pages/StudentJourneyPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 
@@ -173,6 +174,16 @@ export default function App() {
       case '/how-it-works':
         return (
           <HowItWorksPage
+            onOpenGuidanceModal={openGuidanceModal}
+            onOpenCounsellingModal={() => openCounsellingModal()}
+            onOpenAdmissionModal={openAdmissionModal}
+            onNavigate={navigate}
+          />
+        );
+
+      case '/student-journey':
+        return (
+          <StudentJourneyPage
             onOpenGuidanceModal={openGuidanceModal}
             onOpenCounsellingModal={() => openCounsellingModal()}
             onOpenAdmissionModal={openAdmissionModal}

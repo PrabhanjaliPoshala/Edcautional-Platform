@@ -15,7 +15,8 @@ import {
   Brain,
   Building2,
   BookOpen,
-  FileText
+  FileText,
+  MapPin
 } from 'lucide-react';
 
 interface CareerCounsellingPageProps {
@@ -548,6 +549,42 @@ export const CareerCounsellingPage: React.FC<CareerCounsellingPageProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Address & Headquarters Section (Requirement 6) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-left">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-[#C99A2E] flex items-center justify-center shrink-0">
+              <MapPin className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-[#C99A2E] uppercase font-mono tracking-wider">
+                HEADQUARTERS & VISITOR DESK
+              </span>
+              <h3 className="text-xl font-bold text-[#0B2A52] font-display mt-0.5">
+                CareerVerse India
+              </h3>
+              <div className="text-sm text-slate-700 mt-2 leading-relaxed font-medium">
+                <p>23-11-271,</p>
+                <p>S V Nagar,</p>
+                <p>Revenue Ward No 23,</p>
+                <p>Tirupati – 517501</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+            <button
+              type="button"
+              onClick={onOpenCounsellingModal}
+              className="py-3 px-6 bg-[#0B2A52] hover:bg-[#123E73] text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2"
+            >
+              <PhoneCall className="w-4 h-4 text-[#E5C66B]" />
+              <span>Book In-Person / Online Counselling</span>
+            </button>
+          </div>
         </div>
       </section>
 

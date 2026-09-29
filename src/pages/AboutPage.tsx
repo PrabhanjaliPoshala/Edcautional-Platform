@@ -111,9 +111,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
             <div>
-              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">1000+</div>
-              <div className="text-xs font-bold text-slate-700 mt-1">Students Guided</div>
-              <div className="text-[11px] text-slate-500">Across India</div>
+              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">5000+</div>
+              <div className="text-xs font-bold text-slate-700 mt-1">Students Guided Across India</div>
+              <div className="text-[11px] text-slate-500">Pan India Presence</div>
             </div>
             <div className="pt-3 md:pt-0">
               <div className="text-3xl font-extrabold text-[#C99A2E] font-display">1000+</div>
@@ -121,7 +121,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               <div className="text-[11px] text-slate-500">UG, PG & Online Degrees</div>
             </div>
             <div className="pt-3 md:pt-0">
-              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">100+</div>
+              <div className="text-3xl font-extrabold text-[#0B2A52] font-display">500+</div>
               <div className="text-xs font-bold text-slate-700 mt-1">Accredited Campuses</div>
               <div className="text-[11px] text-slate-500">UGC & NAAC Verified</div>
             </div>
@@ -133,12 +133,48 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
         </div>
 
+        {/* Core Pillars Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#C99A2E] flex items-center justify-center font-bold">
+              <Compass className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#0B2A52] font-display">Career Counselling</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              1-on-1 personalized mentorship mapping authentic strengths, academic goals, and multi-year industry trajectories across emerging domains.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0B2A52] flex items-center justify-center font-bold">
+              <Target className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#0B2A52] font-display">Psychometric Assessment</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Scientifically calibrated cognitive tests mapping spatial, numerical, verbal, and personality alignments followed by expert guidance debriefs.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#C99A2E] flex items-center justify-center font-bold">
+              <Award className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#0B2A52] font-display">Admission Guidance</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              End-to-end statutory institutional facilitation across 500+ accredited campuses nationwide with complete fee transparency and merit parity.
+            </p>
+          </div>
+        </div>
+
         <div className="bg-[#0B2A52] text-white rounded-2xl p-8 sm:p-12 text-center space-y-4">
+          <span className="text-xs font-bold text-[#E5C66B] uppercase tracking-widest font-mono">
+            Pan India Presence · 5000+ Students Guided
+          </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold font-display">
             A Pan-India Institutional Presence
           </h2>
           <p className="text-sm text-slate-200 max-w-2xl mx-auto leading-relaxed">
-            With centralized counselling hubs Across India and advisory ties across 1000+ leading Indian and global institutions, CareerVerse India provides accessible, world-class admission facilitation for students nationwide.
+            With centralized counselling desks Across India and advisory ties across 500+ accredited Indian and global institutions, CareerVerse India provides accessible, world-class admission facilitation, career counselling, and psychometric assessments for students nationwide.
           </p>
           <div className="pt-4 flex justify-center gap-3">
             <button

@@ -1,6 +1,9 @@
 import { University } from '../types';
+import { additionalOnlineUniversities } from './additionalInstitutionsData';
+import { additionalGlobalUniversities, additionalExecutiveAndPartners } from './globalAndExecutiveData';
+import { engineeringCollegesAndUniversities } from './engineeringCollegesData';
 
-export const initialUniversities: University[] = [
+const baseUniversities: University[] = [
   {
     id: 'univ-chandigarh',
     slug: 'chandigarh-university',
@@ -831,5 +834,384 @@ export const initialUniversities: University[] = [
     ],
     admission_process: 'VITEEE rank or direct institutional merit guidance through CareerVerse.',
     important_dates: 'Academic session 2026-27 counselling underway.'
+  },
+  // Additional Institutions requested by user
+  {
+    id: 'univ-gla-online',
+    slug: 'gla-university-online',
+    name: 'GLA University Online',
+    location: 'Mathura, Uttar Pradesh',
+    city: 'Mathura',
+    state: 'Uttar Pradesh',
+    established_year: 1998,
+    naac_grade: 'NAAC A+ Grade',
+    ranking: 'UGC-DEB Recognized · NIRF Ranked University',
+    logo_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Premier UGC-DEB recognized online education wing of GLA University, delivering industry-aligned undergraduate and postgraduate degrees with interactive virtual learning.',
+    about: 'GLA University Online offers government-recognized online degrees designed for working professionals and regular students seeking flexible, quality education.',
+    programs_available: ['Online BBA', 'Online BCA', 'Online B.Com', 'Online MBA', 'Online MCA'],
+    accreditation: 'UGC-DEB Entitled · NAAC A+ Grade · AICTE Approved',
+    campus_highlights: ['AI-enabled Learning Management System (LMS)', 'Industry expert masterclasses', 'Dedicated student placement support cell'],
+    admission_process: 'Direct merit application & document verification via CareerVerse.',
+    important_dates: 'Online admissions open for upcoming academic cycle.'
+  },
+  {
+    id: 'univ-iim-kozhikode',
+    slug: 'iim-kozhikode',
+    name: 'IIM Kozhikode',
+    location: 'Kozhikode, Kerala',
+    city: 'Kozhikode',
+    state: 'Kerala',
+    established_year: 1996,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF #3 Management Institute in India · EQUIS & AMBA Accredited',
+    logo_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Top-tier Indian Institute of Management renowned for cutting-edge executive education, AI leadership programs, and global business pedagogy.',
+    about: 'IIM Kozhikode is one of the premier management schools in Asia, holding prestigious global accreditations from EQUIS and AMBA. It offers world-class executive post-graduate certificates and leadership diplomas.',
+    programs_available: ['Executive Post Graduate Programme in Management', 'AI for Business Professionals', 'Chief Technology Officer Programme', 'Senior Management Programme'],
+    accreditation: 'Institute of National Importance · EQUIS Accredited · AMBA Accredited',
+    campus_highlights: ['Hilltop eco-friendly campus', 'Global executive alumni network', 'Pioneering interactive learning cohorts'],
+    admission_process: 'Profile screening and professional experience review via CareerVerse.',
+    important_dates: 'Executive cohorts commencing every quarter.'
+  },
+  {
+    id: 'univ-golden-gate',
+    slug: 'golden-gate-university',
+    name: 'Golden Gate University',
+    location: 'San Francisco, California, USA',
+    city: 'San Francisco',
+    state: 'California (USA)',
+    established_year: 1901,
+    naac_grade: 'WASC Senior College and University Commission (WSCUC)',
+    ranking: '#1 Best College for Adult Learners (Washington Monthly)',
+    logo_url: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Distinguished California institution in San Francisco providing international online master’s and DBA programs with concentration in Generative AI and business leadership.',
+    about: 'Golden Gate University (GGU) has been preparing professionals for over 120 years. GGU offers globally accredited degrees that connect international learners directly with Silicon Valley expertise.',
+    programs_available: ['Master of Science in Business Analytics', 'DBA in Emerging Tech (GenAI)', 'Global Executive MBA', 'MS in Project Management'],
+    accreditation: 'WSCUC Accredited (USA) · California State Recognized',
+    campus_highlights: ['Silicon Valley adjunct faculty', 'Global alumni in Fortune 500 corporations', 'Flexible asynchronous learning'],
+    admission_process: 'International transcript evaluation and statement of purpose screening.',
+    important_dates: 'Spring, Summer, and Fall intake admissions active.'
+  },
+  {
+    id: 'univ-iiit-bangalore',
+    slug: 'iiit-bangalore',
+    name: 'IIIT Bangalore',
+    location: 'Bengaluru, Karnataka',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    established_year: 1999,
+    naac_grade: 'NAAC A+ Grade',
+    ranking: 'NIRF Top IT & Research Institution · Deemed University',
+    logo_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Premier national information technology institute in Electronic City Bengaluru, at the forefront of AI, Data Science, and Software Architecture programs.',
+    about: 'International Institute of Information Technology Bangalore (IIIT-B) is a leading research university functioning with support from the Government of Karnataka and the IT industry.',
+    programs_available: ['Executive PG Programme in Applied AI & Agentic AI', 'Executive PG Programme in Data Science', 'Executive PG Programme in Software Development'],
+    accreditation: 'UGC Recognized · NAAC A+ Grade · AICTE Approved',
+    campus_highlights: ['Located in Electronic City tech hub', 'Direct faculty research collaborations', 'Industry-vetted curriculum'],
+    admission_process: 'Aptitude screening and academic evaluation via CareerVerse desk.',
+    important_dates: 'Executive batch admissions open.'
+  },
+  {
+    id: 'univ-iit-madras',
+    slug: 'iit-madras',
+    name: 'IIT Madras',
+    location: 'Chennai, Tamil Nadu',
+    city: 'Chennai',
+    state: 'Tamil Nadu',
+    established_year: 1959,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF #1 Overall Institution in India (Consecutive Years)',
+    logo_url: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'India’s premier institute of national importance, pioneering accessible online degrees in Data Science, Programming, and Electronic Systems.',
+    about: 'IIT Madras is recognized globally for research excellence, world-class faculty, and innovative pedagogy. Its flagship BS in Data Science and Applications is revolutionizing higher education across India.',
+    programs_available: ['BS in Data Science and Applications', 'BS in Electronic Systems', 'Online Diploma in Programming', 'Online Diploma in Data Science'],
+    accreditation: 'Institute of National Importance · NIRF Rank #1 Overall',
+    campus_highlights: ['Pioneering online degree framework', 'Direct IIT Madras alumni status', 'Placement support with top tech recruiters'],
+    admission_process: 'Qualifier exam planning and direct guidance through CareerVerse.',
+    important_dates: 'Multiple qualifier application windows annually.'
+  },
+  {
+    id: 'univ-iit-kharagpur',
+    slug: 'iit-kharagpur',
+    name: 'IIT Kharagpur',
+    location: 'Kharagpur, West Bengal',
+    city: 'Kharagpur',
+    state: 'West Bengal',
+    established_year: 1951,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF Top 5 Engineering & Technology Institution in India',
+    logo_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'The first IIT established in India, acclaimed for cutting-edge engineering pedagogy, entrepreneurship, and executive technical certifications.',
+    about: 'IIT Kharagpur was established in 1951 as the first of the Indian Institutes of Technology. It has continuously led engineering education, research, and executive advanced certification.',
+    programs_available: ['Executive Certificate in AI & Machine Learning', 'Advanced Program in Supply Chain Analytics', 'Certificate in Cyber Security'],
+    accreditation: 'Institute of National Importance · NIRF Top 5 Engineering',
+    campus_highlights: ['2,100-acre historic campus', 'World-class supercomputing & AI research centres', 'Global alumni leadership in Fortune 100'],
+    admission_process: 'Executive application screening and CareerVerse advisor consultation.',
+    important_dates: 'Cohorts open for executive technical intakes.'
+  },
+  {
+    id: 'univ-ljmu',
+    slug: 'liverpool-john-moores-university',
+    name: 'Liverpool John Moores University (LJMU)',
+    location: 'Liverpool, United Kingdom',
+    city: 'Liverpool',
+    state: 'United Kingdom (Global Online)',
+    established_year: 1823,
+    naac_grade: 'QAA Quality Assured (UK)',
+    ranking: 'Top 500 Times Higher Education World University Rankings',
+    logo_url: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Historic British public research university offering dual-credential Master of Science degrees in AI, Machine Learning, and Data Science for global professionals.',
+    about: 'Liverpool John Moores University traces its history back to 1823. In academic partnership with Indian institutions, it offers internationally recognized Master’s degrees with complete WES equivalence.',
+    programs_available: ['Master of Science in Machine Learning & AI', 'Master of Science in Data Science', 'Master of Business Administration (MBA)'],
+    accreditation: 'Privy Council Recognised (UK) · QAA UK Verified · WES Recognised',
+    campus_highlights: ['Full UK University Master’s Degree', 'Dissertation mentored by international researchers', 'Dual alumni privileges'],
+    admission_process: 'Academic transcript verification and statement review via CareerVerse.',
+    important_dates: 'Quarterly academic cohorts open for registration.'
+  },
+  {
+    id: 'univ-christ-online',
+    slug: 'christ-university-online',
+    name: 'Christ University Online',
+    location: 'Bengaluru, Karnataka',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    established_year: 1969,
+    naac_grade: 'NAAC A+ Grade',
+    ranking: 'NIRF Top Ranked Multi-Disciplinary Deemed University',
+    logo_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Digital education wing of Bengaluru’s renowned Christ University, providing flexible degree credentials with rigorous academic standards.',
+    about: 'Christ University Online brings the institution’s high academic discipline and corporate prestige to virtual learners across management, commerce, and computer science.',
+    programs_available: ['Online BBA', 'Online B.Com', 'Online MBA', 'Online MCA'],
+    accreditation: 'UGC-DEB Recognized · NAAC A+ Grade · AICTE Approved',
+    campus_highlights: ['Rigorous continuous evaluation', 'Top placement tie-ups in Bengaluru IT hub', 'Holistic personality development'],
+    admission_process: 'Merit profile screening and CareerVerse admission counselling.',
+    important_dates: 'Admissions open for current intake.'
+  },
+  {
+    id: 'univ-iim-indore',
+    slug: 'iim-indore',
+    name: 'IIM Indore',
+    location: 'Indore, Madhya Pradesh',
+    city: 'Indore',
+    state: 'Madhya Pradesh',
+    established_year: 1996,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'Triple Crown Accredited (AACSB, AMBA, EQUIS) · NIRF Top 10',
+    logo_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Elite management institution with Triple Crown international accreditation, offering executive master’s certificates and leadership programs.',
+    about: 'IIM Indore is among the top 1% of business schools worldwide holding the Triple Crown accreditation. It offers specialized executive certifications designed for ambitious mid to senior managers.',
+    programs_available: ['Post Graduate Certificate in Management', 'Executive Programme in Sales & Marketing', 'Certificate in Strategic Leadership'],
+    accreditation: 'AACSB, AMBA & EQUIS Triple Crown · NIRF Top 10 Management',
+    campus_highlights: ['Prestigious Triple Crown status', 'Campus immersion modules at Indore', 'Global executive peer network'],
+    admission_process: 'Work profile evaluation and admission guidance via CareerVerse.',
+    important_dates: 'Cohort registrations open.'
+  },
+  {
+    id: 'univ-iim-nagpur',
+    slug: 'iim-nagpur',
+    name: 'IIM Nagpur',
+    location: 'Nagpur, Maharashtra',
+    city: 'Nagpur',
+    state: 'Maharashtra',
+    established_year: 2015,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF Ranked Premier Management Institute',
+    logo_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Fast-growing Indian Institute of Management delivering industry-relevant executive diplomas and advanced management certifications.',
+    about: 'IIM Nagpur was established under the mentorship of IIM Ahmedabad. Located in the logistical heart of India, it provides forward-looking business management and fintech programs.',
+    programs_available: ['Executive MBA', 'Post Graduate Certificate in Digital Strategy', 'Certificate in FinTech & Risk Management'],
+    accreditation: 'Institute of National Importance · Ministry of Education, Govt of India',
+    campus_highlights: ['Modern 132-acre MIHAN campus', 'Curriculum designed with industry leaders', 'Active alumni network'],
+    admission_process: 'Candidate screening and application filing through CareerVerse.',
+    important_dates: 'Executive program rounds active.'
+  },
+  {
+    id: 'univ-iim-mumbai',
+    slug: 'iim-mumbai',
+    name: 'IIM Mumbai',
+    location: 'Mumbai, Maharashtra',
+    city: 'Mumbai',
+    state: 'Maharashtra',
+    established_year: 1963,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF #7 Management Institute in India · Premier Supply Chain Hub',
+    logo_url: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Formerly NITIE Mumbai, newly inducted as IIM Mumbai, acclaimed as India’s apex institution for Operations, Supply Chain, and Digital Management.',
+    about: 'IIM Mumbai (formerly National Institute of Industrial Engineering) has been recognized as the Mecca of Supply Chain and Operations Management in India for six decades.',
+    programs_available: ['Executive MBA in Supply Chain & Analytics', 'Chief Operating Officer Programme', 'Digital Transformation Leadership'],
+    accreditation: 'Institute of National Importance · NIRF #7 Management',
+    campus_highlights: ['Prime location in Mumbai financial capital', 'Unrivalled supply chain placement records', 'Corporate CEO mentorship'],
+    admission_process: 'Profile evaluation and CareerVerse executive advisory desk.',
+    important_dates: 'Executive batch admissions active.'
+  },
+  {
+    id: 'univ-iim-vizag',
+    slug: 'iim-visakhapatnam',
+    name: 'IIM Visakhapatnam',
+    location: 'Visakhapatnam, Andhra Pradesh',
+    city: 'Visakhapatnam',
+    state: 'Andhra Pradesh',
+    established_year: 2015,
+    naac_grade: 'Institute of National Importance',
+    ranking: 'NIRF Top 30 Management Institute in India',
+    logo_url: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Dynamic new-generation IIM on the eastern seaboard, celebrated for executive management cohorts and emerging tech leadership programs.',
+    about: 'IIM Visakhapatnam was established under the mentorship of IIM Bangalore. It is situated on a world-class smart campus in Gambheeram, Visakhapatnam.',
+    programs_available: ['Executive MBA (EMBA)', 'Post Graduate Certificate in Business Analytics', 'Digital Marketing & Strategy'],
+    accreditation: 'Institute of National Importance · Ministry of Education Approved',
+    campus_highlights: ['Smart green GRIHA-certified campus', 'Curriculum modeled on IIM Bangalore standards', 'Weekend executive schedule'],
+    admission_process: 'Written test / CAT / GMAT or institutional entrance test with CareerVerse.',
+    important_dates: 'Session applications open.'
+  },
+  {
+    id: 'univ-jiit-noida',
+    slug: 'jaypee-institute-of-information-technology',
+    name: 'Jaypee Institute of Information Technology (JIIT)',
+    location: 'Noida, Uttar Pradesh',
+    city: 'Noida',
+    state: 'Uttar Pradesh (Delhi NCR)',
+    established_year: 2001,
+    naac_grade: 'NAAC A Grade',
+    ranking: 'NIRF Top 100 Engineering Institute · Deemed University',
+    logo_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Premier technology institute in Sector 62 Noida, celebrated for computer science engineering, software placements, and modern labs.',
+    about: 'Jaypee Institute of Information Technology is a Deemed to be University recognized by UGC and accredited by NAAC. JIIT is one of the top choices for engineering and IT students in Delhi NCR.',
+    programs_available: ['B.Tech in Computer Science & Engineering', 'B.Tech in Information Technology', 'Integrated M.Tech (CSE)', 'BCA & MCA Programs'],
+    accreditation: 'UGC Recognized · NAAC A Grade · AICTE Approved',
+    campus_highlights: ['Modern tech campus in central Noida', 'Superlative coding culture and hackathons', '90%+ campus placements in premier IT MNCs'],
+    admission_process: 'JEE Main merit rank or 10+2 marks counselling through CareerVerse.',
+    important_dates: 'Counselling registrations active for 2026-27 intake.'
+  },
+  {
+    id: 'univ-liba-chennai',
+    slug: 'loyola-institute-of-business-administration',
+    name: 'LIBA (Loyola Institute of Business Administration)',
+    location: 'Chennai, Tamil Nadu',
+    city: 'Chennai',
+    state: 'Tamil Nadu',
+    established_year: 1979,
+    naac_grade: 'SAQS Accredited · AICTE Approved',
+    ranking: 'NIRF Top 50 Management Institute · Jesuit Academic Legacy',
+    logo_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'Prestigious Jesuit business school in Chennai celebrated for ethical leadership, finance excellence, and 100% corporate placement track record.',
+    about: 'Loyola Institute of Business Administration (LIBA) is a premier Catholic business school located on the sprawling Loyola College campus in Chennai, known for rigorous ethics and executive education.',
+    programs_available: ['PGDM (Full-Time)', 'Executive Diploma in Management', 'Online Certificate in Business Analytics', 'Healthcare Management'],
+    accreditation: 'AICTE Approved · SAQS Accredited · AIU Recognized Equivalent to MBA',
+    campus_highlights: ['Jesuit value-based pedagogy', 'Loyola campus central location in Chennai', '100% placement record with top consulting & BFSI firms'],
+    admission_process: 'CAT / XAT score counselling & interview prep with CareerVerse.',
+    important_dates: 'Admissions open for current batch intake.'
+  },
+  {
+    id: 'univ-imt-ghaziabad',
+    slug: 'imt-ghaziabad',
+    name: 'IMT Ghaziabad',
+    location: 'Ghaziabad, Uttar Pradesh',
+    city: 'Ghaziabad',
+    state: 'Uttar Pradesh (Delhi NCR)',
+    established_year: 1980,
+    naac_grade: 'AACSB Accredited · NBA Accredited',
+    ranking: 'NIRF Top 35 Management Institute in India · #1 for Marketing',
+    logo_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=160&auto=format&fit=crop&q=80',
+    banner_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80'
+    ],
+    short_description: 'India’s foremost business school for Marketing and Corporate Strategy, accredited by AACSB with an expansive global executive alumni base.',
+    about: 'Institute of Management Technology (IMT) Ghaziabad is globally accredited by AACSB and recognized as one of India’s premier institutions for marketing, finance, and banking management.',
+    programs_available: ['PGDM (Marketing / Finance / Banking)', 'PGDM Executive', 'Online Post Graduate Diploma in Management'],
+    accreditation: 'AACSB Accredited · NBA Accredited · AICTE Approved · AIU Equivalent to MBA',
+    campus_highlights: ['Pioneering marketing curriculum', 'International student exchange programs', 'Stellar recruiter participation across FMCG & Tech'],
+    admission_process: 'CAT / XAT / GMAT profile guidance through CareerVerse.',
+    important_dates: 'Intake counselling in progress.'
   }
 ];
+
+// Combine all institutions, ensuring uniqueness by slug or ID
+const mergedMap = new Map<string, University>();
+
+// Add base institutions
+for (const u of baseUniversities) {
+  mergedMap.set(u.slug || u.id, u);
+}
+
+// Add Online Universities
+for (const u of additionalOnlineUniversities) {
+  mergedMap.set(u.slug || u.id, u);
+}
+
+// Add Global Universities
+for (const u of additionalGlobalUniversities) {
+  mergedMap.set(u.slug || u.id, u);
+}
+
+// Add Executive & Partner Institutions
+for (const u of additionalExecutiveAndPartners) {
+  mergedMap.set(u.slug || u.id, u);
+}
+
+// Add Engineering Colleges & Universities
+for (const u of engineeringCollegesAndUniversities) {
+  mergedMap.set(u.slug || u.id, u);
+}
+
+export const initialUniversities: University[] = Array.from(mergedMap.values());
+
+

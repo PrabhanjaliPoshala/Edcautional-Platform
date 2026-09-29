@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { initialPrograms } from '../data/programsData';
+import { initialUniversities } from '../data/universitiesData';
 import { counsellingPathways, CounsellingPathway } from '../data/counsellingData';
 import { ProgramCard } from '../components/cards/ProgramCard';
+import { UniversityCard } from '../components/cards/UniversityCard';
 import { StageCard } from '../components/cards/StageCard';
 import { OnlineCertificationsSection } from '../components/sections/OnlineCertificationsSection';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/common/ScrollReveal';
@@ -18,7 +20,8 @@ import {
   Layers,
   ShieldCheck,
   CheckCircle2,
-  Users
+  Users,
+  Sparkles
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -189,14 +192,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* ========================================================
-          ACHIEVEMENT COUNTERS (Requirement 1: 1000+ Students & Admissions)
+          ACHIEVEMENT COUNTERS (Requirement 1: 5000+ Students & 500+ Campuses)
           ======================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-14 relative z-20">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200/90 p-6 sm:p-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
             <div className="text-center pt-2 lg:pt-0">
               <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2A52] font-display">
-                1000+
+                5000+
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
                 Students Guided Across India
@@ -211,7 +214,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 1000+
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
-                Admissions Facilitated
+                Admissions Completed
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
                 Across engineering, medical & management faculties
@@ -220,10 +223,10 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <div className="text-center pt-4 lg:pt-0 lg:pl-6">
               <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2A52] font-display">
-                100+
+                500+
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
-                Partner Institutions & Colleges
+                Accredited Campuses
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
                 UGC, AICTE & NAAC accredited campuses
@@ -235,7 +238,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 100%
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
-                Objective & Independent
+                Independent Advice
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
                 Zero commercial quotas · Student-first ethos
@@ -646,10 +649,11 @@ export const HomePage: React.FC<HomePageProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => onNavigate('/how-it-works')}
+            onClick={() => onNavigate('/student-journey')}
             className="py-3 px-6 bg-[#0B2A52] hover:bg-[#123E73] text-white font-bold text-xs sm:text-sm rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <span>Explore Full 21-Step Process Flow</span>
+            <Sparkles className="w-4 h-4 text-[#E5C66B]" />
+            <span>Interactive Student Journey Roadmap</span>
             <ArrowRight className="w-4 h-4 text-[#C99A2E]" />
           </button>
         </div>

@@ -70,19 +70,10 @@ export function getStoredUniversities(): University[] {
       return initialUniversities;
     }
     const parsed: University[] = JSON.parse(raw);
-    // If initialUniversities has items not in parsed, merge them
-    const existingSlugs = new Set(parsed.map(u => u.slug || u.id));
-    let hasNew = false;
-    const merged = [...parsed];
-    for (const initU of initialUniversities) {
-      if (!existingSlugs.has(initU.slug) && !existingSlugs.has(initU.id)) {
-        merged.push(initU);
-        hasNew = true;
-      }
-    }
-    if (hasNew) {
-      localStorage.setItem(UNIVERSITIES_STORAGE_KEY, JSON.stringify(merged));
-    }
+    // Ensure initialUniversities always provide the fresh official logos and details
+    const customEntries = parsed.filter(p => !initialUniversities.some(u => u.slug === p.slug || u.id === p.id));
+    const merged = [...initialUniversities, ...customEntries];
+    localStorage.setItem(UNIVERSITIES_STORAGE_KEY, JSON.stringify(merged));
     return merged;
   } catch (err) {
     return initialUniversities;

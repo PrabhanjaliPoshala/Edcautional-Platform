@@ -217,7 +217,15 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
 
   const handleAction = (type?: string) => {
     if (type === 'test') {
-      window.open(settings.psychometric_link || 'https://assessment.careerverse.in', '_blank', 'noopener,noreferrer');
+      const url = settings.psychometric_link || 'https://assessment.careerverse.in';
+      try {
+        const win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!win) {
+          onOpenCounsellingModal();
+        }
+      } catch (err) {
+        onOpenCounsellingModal();
+      }
     } else if (type === 'admission') {
       if (onOpenAdmissionModal) {
         onOpenAdmissionModal();
@@ -281,13 +289,25 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
           
           {/* Primary Action Buttons */}
           <div className="pt-3 flex flex-wrap justify-center items-center gap-3">
+            {onNavigate && (
+              <button
+                type="button"
+                onClick={() => onNavigate('/student-journey')}
+                className="py-3 px-6 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-extrabold text-sm rounded-lg shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <Sparkles className="w-4 h-4 text-[#0B2A52]" />
+                <span>Explore Student Journey Roadmap</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => {
                 if (onOpenAdmissionModal) onOpenAdmissionModal();
                 else onOpenGuidanceModal();
               }}
-              className="py-3 px-6 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-extrabold text-sm rounded-lg shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
+              className="py-3 px-6 bg-white/10 hover:bg-white/20 text-white font-bold text-sm rounded-lg border border-white/20 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <FileText className="w-4 h-4" />
               <span>Admission Guidance Form</span>

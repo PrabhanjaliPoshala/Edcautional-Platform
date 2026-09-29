@@ -77,8 +77,7 @@ export const ContactPage: React.FC = () => {
                   <div>
                     <h3 className="font-bold text-slate-900">Email Correspondence</h3>
                     <p className="text-xs text-slate-600 mt-0.5">
-                      General: info@careerverseindia.org<br />
-                      Admissions: admissions@careerverseindia.org
+                      Enquiries & Admissions: <a href="mailto:enquiry@careerverseindia.com" className="hover:text-[#0B2A52] font-semibold text-slate-800 transition-colors">enquiry@careerverseindia.com</a>
                     </p>
                   </div>
                 </div>

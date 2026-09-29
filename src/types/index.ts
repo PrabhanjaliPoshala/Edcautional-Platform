@@ -161,14 +161,18 @@ export interface University {
   website_url?: string;
   // Reusable College / University card enhancements:
   logo_url?: string;
+  logoUrl?: string;
   banner_url?: string;
   gallery?: string[];
   naac_grade?: string;
+  naacGrade?: string;
   ranking?: string;
   established_year?: number | string;
+  established?: number | string;
   city?: string;
   state?: string;
   short_description?: string;
+  category?: 'Online Universities' | 'Global Universities' | 'Executive Education Partners' | 'Professional Learning Partners' | 'Engineering Colleges & Universities' | string;
 }
 
 // Filter State for Program Finder

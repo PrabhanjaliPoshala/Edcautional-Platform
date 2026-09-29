@@ -107,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({
                   className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
                 >
                   <ArrowRight className="w-3 h-3 text-[#C99A2E]" />
-                  <span>University Directory</span>
+                  <span>Universities & Colleges</span>
                 </button>
               </li>
             </ul>
@@ -126,6 +126,15 @@ export const Footer: React.FC<FooterProps> = ({
                 >
                   <ArrowRight className="w-3 h-3 text-[#C99A2E]" />
                   <span>How It Works</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleNav('/student-journey')}
+                  className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-[#E5C66B] font-semibold"
+                >
+                  <ArrowRight className="w-3 h-3 text-[#C99A2E]" />
+                  <span>Student Journey</span>
                 </button>
               </li>
               <li>
@@ -161,8 +170,8 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#C99A2E] shrink-0" />
-                <a href="mailto:admissions@careerverseindia.org" className="hover:text-[#E5C66B] transition-colors">
-                  admissions@careerverseindia.org
+                <a href="mailto:enquiry@careerverseindia.com" className="hover:text-[#E5C66B] transition-colors">
+                  enquiry@careerverseindia.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5">

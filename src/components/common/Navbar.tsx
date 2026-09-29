@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BrandLogo } from './BrandLogo';
-import { Menu, X, CalendarCheck, GraduationCap, Shield } from 'lucide-react';
+import { Menu, X, CalendarCheck, GraduationCap, Shield, ChevronDown, Compass, MapPin } from 'lucide-react';
 
 interface NavbarProps {
   currentPath: string;
@@ -18,13 +18,32 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAdmin
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [howItWorksDropdown, setHowItWorksDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setHowItWorksDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Career Pathways', path: '/career-counselling' },
     { label: 'Admissions', path: '/admissions' },
-    { label: 'Programs & Universities', path: '/programs' },
-    { label: 'How It Works', path: '/how-it-works' },
+    { label: 'Universities & Colleges', path: '/universities' },
+    { 
+      label: 'How It Works', 
+      path: '/how-it-works',
+      children: [
+        { label: 'How It Works Overview', path: '/how-it-works', desc: 'Process Architecture & FAQs' },
+        { label: 'Student Journey', path: '/student-journey', desc: 'Animated 21-Step Roadmap' }
+      ]
+    },
     { label: 'About CareerVerse', path: '/about' },
     { label: 'Contact', path: '/contact' },
   ];
@@ -32,6 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleLinkClick = (path: string) => {
     onNavigate(path);
     setMobileMenuOpen(false);
+    setHowItWorksDropdown(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -51,7 +71,72 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Links */}
           <nav className="hidden xl:flex items-center gap-6 2xl:gap-8">
             {navLinks.map((link) => {
-              const isActive = currentPath === link.path || (link.path === '/programs' && (currentPath.startsWith('/programs') || currentPath.startsWith('/universities')));
+              const hasChildren = Boolean(link.children && link.children.length > 0);
+              const isChildActive = hasChildren && link.children?.some(c => currentPath === c.path);
+              const isActive = currentPath === link.path || isChildActive || (link.path === '/programs' && (currentPath.startsWith('/programs') || currentPath.startsWith('/universities')));
+
+              if (hasChildren) {
+                return (
+                  <div 
+                    key={link.path}
+                    className="relative"
+                    onMouseEnter={() => setHowItWorksDropdown(true)}
+                    onMouseLeave={() => setHowItWorksDropdown(false)}
+                    ref={dropdownRef}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setHowItWorksDropdown(prev => !prev)}
+                      className={`text-xs font-semibold tracking-wide transition-colors relative py-1 cursor-pointer flex items-center gap-1 ${
+                        isActive 
+                          ? 'text-[#0B2A52] font-bold' 
+                          : 'text-slate-600 hover:text-[#0B2A52]'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${howItWorksDropdown ? 'rotate-180 text-[#C99A2E]' : 'text-slate-400'}`} />
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#C99A2E] rounded-full" />
+                      )}
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {howItWorksDropdown && (
+                      <div className="absolute top-full left-0 w-64 pt-2 z-50 animate-fadeIn">
+                        <div className="bg-white rounded-xl shadow-xl border border-slate-200/90 p-2 space-y-1">
+                          {link.children?.map(subItem => (
+                            <button
+                              key={subItem.path}
+                              type="button"
+                              onClick={() => handleLinkClick(subItem.path)}
+                              className={`w-full text-left p-2.5 rounded-lg transition-colors cursor-pointer flex flex-col ${
+                                currentPath === subItem.path
+                                  ? 'bg-amber-50 text-[#0B2A52] font-bold border-l-2 border-[#C99A2E]'
+                                  : 'hover:bg-slate-50 text-slate-700'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-[#0B2A52]">
+                                  {subItem.label}
+                                </span>
+                                {subItem.path === '/student-journey' && (
+                                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C99A2E]/20 text-[#0B2A52] font-extrabold">
+                                    NEW
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[11px] text-slate-500 mt-0.5">
+                                {subItem.desc}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <button
                   key={link.path}
@@ -129,7 +214,49 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl">
           <nav className="flex flex-col space-y-1">
             {navLinks.map((link) => {
-              const isActive = currentPath === link.path || (link.path === '/programs' && (currentPath.startsWith('/programs') || currentPath.startsWith('/universities')));
+              const hasChildren = Boolean(link.children && link.children.length > 0);
+              const isChildActive = hasChildren && link.children?.some(c => currentPath === c.path);
+              const isActive = currentPath === link.path || isChildActive || (link.path === '/programs' && (currentPath.startsWith('/programs') || currentPath.startsWith('/universities')));
+
+              if (hasChildren) {
+                return (
+                  <div key={link.path} className="space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => handleLinkClick(link.path)}
+                      className={`w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer flex items-center justify-between ${
+                        isActive 
+                          ? 'bg-slate-100 text-[#0B2A52] font-bold border-l-4 border-[#C99A2E]' 
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                    </button>
+                    <div className="pl-4 pr-1 py-1 space-y-1 bg-slate-50/70 rounded-lg">
+                      {link.children?.map(subItem => (
+                        <button
+                          key={subItem.path}
+                          type="button"
+                          onClick={() => handleLinkClick(subItem.path)}
+                          className={`w-full text-left px-3 py-2 text-xs font-semibold rounded-md transition-colors cursor-pointer flex items-center justify-between ${
+                            currentPath === subItem.path
+                              ? 'bg-amber-100/70 text-[#0B2A52] font-bold'
+                              : 'text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <span>{subItem.label}</span>
+                          {subItem.path === '/student-journey' && (
+                            <span className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#C99A2E]/20 text-[#0B2A52] font-bold">
+                              NEW
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <button
                   key={link.path}

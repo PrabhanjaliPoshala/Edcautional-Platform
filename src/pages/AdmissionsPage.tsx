@@ -25,7 +25,7 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
 }) => {
   const [selectedGroup, setSelectedGroup] = useState<string>('All');
 
-  const groups = ['All', 'UG Admissions', 'Diplomas & Professional Programs', 'Online & Executive Education'];
+  const groups = ['All', 'UG Admissions', 'PG Admissions', 'Diplomas & Professional Programs', 'Online & Executive Education'];
 
   const filteredCategories = selectedGroup === 'All'
     ? admissionCategories
@@ -165,6 +165,171 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ========================================================
+          DEDICATED PG ADMISSIONS SECTION (Requirement 2)
+          Placed below UG Admissions and before Professional Programs
+          ======================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-slate-50 to-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm text-left space-y-8">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200/80 pb-6">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#C99A2E] font-mono">
+                  POSTGRADUATE ADMISSIONS
+                </span>
+                <span className="text-slate-300">·</span>
+                <span className="text-xs font-mono text-slate-500 font-medium">Session 2026-27</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A52] font-display mt-1">
+                PG Admissions
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                Explore premier postgraduate master’s programs, executive degrees, and online degrees across UGC and AICTE accredited institutions.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onOpenAdmissionModal('PG Admissions')}
+              className="py-3 px-6 bg-[#0B2A52] hover:bg-[#123E73] text-white font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer flex items-center gap-2 shrink-0 self-start md:self-auto shadow-xs"
+            >
+              <Briefcase className="w-4 h-4 text-[#E5C66B]" />
+              <span>General PG Admission Enquiry</span>
+            </button>
+          </div>
+
+          {/* 10 PG Admissions Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                name: 'MBA (Master of Business Administration)',
+                duration: '2 Years',
+                eligibility: 'Bachelor’s degree in any discipline with min 50% marks (45% for SC/ST). Valid CAT / MAT / XAT / CMAT / CET score or institutional merit counselling.',
+                badge: 'Premier Master’s',
+                tracks: 'Marketing, Finance, HR, Business Analytics, Operations'
+              },
+              {
+                name: 'MCA (Master of Computer Applications)',
+                duration: '2 Years',
+                eligibility: 'Passed BCA / B.Sc (Computer Science / IT) or Bachelor’s degree with Mathematics at 10+2 level or graduation with min 50% aggregate.',
+                badge: 'Top Tech Master’s',
+                tracks: 'AI & Data Science, Cloud Computing, Full-Stack, Cybersecurity'
+              },
+              {
+                name: 'M.Tech (Master of Technology)',
+                duration: '2 Years',
+                eligibility: 'B.Tech / B.E. in relevant discipline with minimum 50-55% aggregate. Valid GATE score or institute-level entrance counselling.',
+                badge: 'Engineering & Tech',
+                tracks: 'Computer Science, VLSI, Robotics, Structural Engineering'
+              },
+              {
+                name: 'M.Com (Master of Commerce)',
+                duration: '2 Years',
+                eligibility: 'B.Com / BBA / BBM or equivalent commerce graduate degree from a recognized university with minimum 45-50% marks.',
+                badge: 'Commerce & Finance',
+                tracks: 'Accounting, Taxation, Corporate Finance, Banking & FinTech'
+              },
+              {
+                name: 'MA (Master of Arts)',
+                duration: '2 Years',
+                eligibility: 'Bachelor’s degree in relevant arts or humanities discipline with min 45-50% aggregate from an accredited university.',
+                badge: 'Humanities & Social Sciences',
+                tracks: 'Psychology, Economics, English Literature, Journalism'
+              },
+              {
+                name: 'MSc (Master of Science)',
+                duration: '2 Years',
+                eligibility: 'B.Sc in relevant subject or allied scientific discipline with min 50% aggregate marks from a recognized university.',
+                badge: 'Pure & Applied Science',
+                tracks: 'Data Science, Biotechnology, Physics, Applied Mathematics'
+              },
+              {
+                name: 'Executive MBA',
+                duration: '1–2 Years',
+                eligibility: 'Graduation in any discipline with min 50% marks plus 2 to 5 years of relevant full-time professional corporate experience.',
+                badge: 'For Working Professionals',
+                tracks: 'Strategic Leadership, Digital Transformation, CXO Cohorts'
+              },
+              {
+                name: 'Online MBA',
+                duration: '2 Years',
+                eligibility: 'Recognized Bachelor’s degree (min 50% marks). 100% online flexibility approved by UGC-DEB for working professionals.',
+                badge: 'UGC-DEB Accredited',
+                tracks: 'Dual Specialization, Marketing, IT Management, Healthcare'
+              },
+              {
+                name: 'Online MCA',
+                duration: '2 Years',
+                eligibility: 'BCA / B.Sc / Bachelor’s degree with Mathematics background. UGC-DEB recognized degree valid for MNCs and global roles.',
+                badge: 'UGC-DEB Accredited',
+                tracks: 'Software Architecture, Cloud, Cyber Security, GenAI'
+              },
+              {
+                name: 'International PG Programs',
+                duration: '1–2 Years',
+                eligibility: 'Recognized Bachelor’s degree with English proficiency. Dual-credential degrees partnered with prestigious UK, US & Australian universities.',
+                badge: 'Global Dual Degree',
+                tracks: 'Global MBA, MS in AI & ML (UK/US), International Business'
+              }
+            ].map((prog, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl border border-slate-200/90 hover:border-[#0B2A52] p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all group"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#C99A2E] font-mono bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      {prog.badge}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs font-semibold text-slate-500 font-mono">
+                      <Clock className="w-3.5 h-3.5 text-[#C99A2E]" />
+                      <span>{prog.duration}</span>
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-[#0B2A52] font-display group-hover:text-[#123E73] transition-colors leading-snug">
+                    {prog.name}
+                  </h3>
+
+                  <div className="pt-2 border-t border-slate-100 space-y-2">
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono block">
+                        Eligibility
+                      </span>
+                      <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
+                        {prog.eligibility}
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono block">
+                        Specialisations
+                      </span>
+                      <p className="text-xs text-slate-700 font-medium mt-0.5">
+                        {prog.tracks}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => onOpenAdmissionModal(prog.name)}
+                    className="w-full py-2.5 px-4 bg-[#C99A2E] hover:bg-[#B88922] text-[#0B2A52] font-extrabold text-xs rounded-xl transition-all shadow-2xs hover:shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <GraduationCap className="w-4 h-4 shrink-0" />
+                    <span>Admission Guidance Button</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 

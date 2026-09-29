@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { University } from '../types';
 import { initialPrograms } from '../data/programsData';
+import { getInstitutionLogoUrl } from '../data/institutionLogos';
 import { 
   ArrowLeft, 
   MapPin, 
@@ -91,16 +92,17 @@ export const UniversityDetailPage: React.FC<UniversityDetailPageProps> = ({
 
           <div className="flex flex-col md:flex-row md:items-center gap-6 pt-2">
             {/* University Logo */}
-            {university.logo_url && !logoError ? (
+            {(getInstitutionLogoUrl(university.slug, university.name) || university.logo_url) && !logoError ? (
               <img
-                src={university.logo_url}
+                src={getInstitutionLogoUrl(university.slug, university.name) || university.logo_url}
                 alt={`${university.name} Logo`}
+                loading="lazy"
                 onError={() => setLogoError(true)}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-white/20 bg-white p-1 shadow-xl shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-contain border-2 border-white/20 bg-white p-2 shadow-xl shrink-0"
               />
             ) : (
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#0B2A52] to-[#123E73] text-[#E5C66B] flex items-center justify-center font-bold font-mono text-2xl border-2 border-white/20 shadow-xl shrink-0">
-                {initials}
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#0B2A52] to-[#123E73] text-[#E5C66B] flex items-center justify-center border-2 border-white/20 shadow-xl shrink-0">
+                <Building2 className="w-10 h-10 text-[#E5C66B]" aria-hidden="true" />
               </div>
             )}
 
