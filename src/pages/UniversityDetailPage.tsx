@@ -13,7 +13,6 @@ import {
   Calendar,
   Trophy,
   GraduationCap,
-  Image as ImageIcon,
   ShieldCheck,
   Clock,
   Sparkles
@@ -51,16 +50,6 @@ export const UniversityDetailPage: React.FC<UniversityDetailPageProps> = ({
 
   // Fallback banner image if not defined
   const bannerImage = university.banner_url || 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format&fit=crop&q=80';
-
-  // Fallback gallery images if not defined
-  const galleryImages = university.gallery && university.gallery.length > 0 
-    ? university.gallery 
-    : [
-        'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80'
-      ];
 
   return (
     <div className="space-y-12 pb-20 text-left">
@@ -295,38 +284,6 @@ export const UniversityDetailPage: React.FC<UniversityDetailPageProps> = ({
                 </div>
               </div>
             )}
-
-            {/* 5. Campus Gallery (Requirement 7) */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 space-y-4 shadow-2xs">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h2 className="text-xl sm:text-2xl font-bold text-[#0B2A52] font-display flex items-center gap-2">
-                  <ImageIcon className="w-5 h-5 text-[#C99A2E]" />
-                  <span>Campus & Infrastructure Gallery</span>
-                </h2>
-                <span className="text-xs text-slate-500 font-mono">
-                  {galleryImages.length} Photos
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {galleryImages.map((imgUrl, idx) => (
-                  <div 
-                    key={idx} 
-                    className="relative overflow-hidden rounded-xl border border-slate-200 aspect-video group bg-slate-100"
-                  >
-                    <img
-                      src={imgUrl}
-                      alt={`${university.name} facility photo ${idx + 1}`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-white text-xs font-semibold">
-                      Campus Infrastructure & Learning Spaces
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
           </div>
 
